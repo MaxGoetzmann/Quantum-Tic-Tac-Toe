@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Python Game on Web</title>
+  </head>
+  <body>
+    <h1>Python Game on Web</h1>
+    <div id="output">Game will load here...</div>
+    <script type="text/javascript">
+      async function loadPyodideAndRun() {
+        let pyodide = await loadPyodide({
+          indexURL: "https://cdn.jsdelivr.net/pyodide/v0.18.1/full/",
+        });
+        await pyodide.loadPackage(["micropip"]); // Load any additional packages your game needs
+        await pyodide.runPythonAsync(`
+                import micropip
+                await micropip.install('some-package')  // Install any Python packages your game needs
+    
+                # Your Python game code here
+                print("Hello from Python!")  // Example Python code
+            `);
+      }
+      loadPyodideAndRun();
+    </script>
+  </body>
+</html>
