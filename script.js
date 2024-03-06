@@ -16,9 +16,10 @@ async function fetchSrcFolder(pyodide) {
     // You have content read permissions for this repository only. Go wild.
     const apiUrl = "https://api.github.com/repos/MaxGoetzmann/Quantum-Tic-Tac-Toe/contents/src";
     const headers = {
-        "Authorization": `token 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`
+        "Authorization": 'token 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'
     }
     try {
+        console.log({ headers })
         const response = await fetch(apiUrl, { headers });
         const data = await response.json();
         data.forEach(file => {
@@ -35,7 +36,7 @@ async function fetchSrcFolder(pyodide) {
 async function loadPyodideAndRun() {
     let pyodide = await loadPyodide();
     await pyodide.loadPackage(["micropip"]); // Load any additional packages your game needs
-    fetchSrcFolder(pyodide)
+    await fetchSrcFolder(pyodide)
     await pyodide.runPythonAsync(`
             import micropip
             import sys
