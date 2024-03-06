@@ -33,9 +33,6 @@ def validate_move(row, col):
 
 def get_player_move(board, player):
     while True:
-        move = int(
-            input(f"Player {player}, enter your move's type or number alias (1-3): ")) - 1
-        )
         row = int(
             input(f"Player {player}, enter your move's row (1-3): ")) - 1
         col = int(
@@ -70,4 +67,5 @@ def play_game():
 
 
 if __name__ == "__main__":
+    print("IN THE MAIN FUNCTION")
     play_game()
