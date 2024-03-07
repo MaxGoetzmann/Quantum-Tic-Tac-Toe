@@ -14,7 +14,6 @@ board_out = [
 ]
 game_out = {}
 game_in = {}
-pyodide_first_pass = False
 
 
 def get_player_moves(game: Game):
