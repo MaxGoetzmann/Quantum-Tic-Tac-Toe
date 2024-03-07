@@ -63,17 +63,7 @@ def test(game):
 def play_game():
     game = Game()
     test(game)
-    return
     get_player_moves(game)
-
-    # while True:
-    #     print(pyodide_move)
-
-    #     # Don't infinite loop which upsets computer.
-    #     if "unload" in pyodide_move:
-    #         break
-
-    #     time.sleep(CYCLE)
 
 
 if __name__ == "__main__":

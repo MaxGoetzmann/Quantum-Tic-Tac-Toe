@@ -50,7 +50,7 @@ async function fetchSrcFolder() {
                     console.log(main_file)
                 }
 
-                pyodide.FS.writeFile(`/${file.name}`, text, { encoding: "utf8" });
+                pyodide.FS.writeFile(`./${file.name}`, text, { encoding: "utf8" });
             });
         });
     } catch (error) {
