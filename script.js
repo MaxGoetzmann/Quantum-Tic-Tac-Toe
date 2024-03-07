@@ -1,4 +1,5 @@
-main_file = null
+newMove = false
+mainFile = null
 pyodide = null
 
 const MoveType = {
@@ -46,8 +47,8 @@ async function fetchSrcFolder() {
 
                 // Save main file for execution
                 if (file.name === "main.py") {
-                    main_file = text;
-                    console.log(main_file)
+                    mainFile = text;
+                    console.log(mainFile)
                 }
 
                 pyodide.FS.writeFile(`./${file.name}`, text, { encoding: "utf8" });
@@ -56,6 +57,17 @@ async function fetchSrcFolder() {
     } catch (error) {
         console.error("Failed to fetch projects:", error);
     }
+}
+
+function gameLoop() {
+    // Game loop
+    if (newMove) {
+        let my_namespace = pyodide.globals.get("dict")();
+        pyodide.runPython(mainFile);
+        newMove = false;
+    }
+
+    requestAnimationFrame(gameLoop);
 }
 
 async function loadPyodideAndRun() {
@@ -67,16 +79,9 @@ async function loadPyodideAndRun() {
 
             # Install Python packages
             await micropip.install("numpy")
+            await micropip.install("jsons")
         `).then(a => {
-
-        // Game loop
-        pyodide.runPythonAsync(main_file)
-
-        pyodide.globals.set("pyodide_row", 0)
-        console.log(pyodide.globals.get("pyodide_row"));
-        pyodide.globals.set("pyodide_row", 1)
-        console.log(pyodide.globals.get("pyodide_row"));
-
+        requestAnimationFrame(gameLoop);
     })
     console.log("post py")
     // ....

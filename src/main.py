@@ -1,40 +1,45 @@
+import sys
 import time
+import json
+import jsonpickle
 from game import Game
 from player_move import PlayerMove, MoveType
 
 CYCLE = 0.4
 pyodide_move = {}
+board_out = [
+            [None, None, None],
+            [None, None, None],
+            [None, None, None],
+]
+game_out = {}
+game_in = {}
 
 
-def initialize_board():
-    return [[" " for _ in range(3)] for _ in range(3)]
-
-
-def validate_move(row, col):
-    return type(row) == int and type(col) == int \
-        and row >= 0 and col >= 0 \
-        and row <= 2 and col <= 2
+def get_json(obj):
+    return json.loads(
+        json.dumps(obj, default=lambda o: getattr(o, '__dict__', str(o)))
+    )
 
 
 def get_player_moves(game: Game):
-    move_validator = {i.value: i.name for i in MoveType}
     while True:
         if game.is_game_over():
             break
 
         try:
             print(game)
-            move = int(input(
-                f"Player {game.get_current_player()}, enter your move's type (0-4): "))
+            move = input(
+                f"Player {game.get_current_player()}, enter your move's type: ")
             row = int(
                 input(f"Player {game.get_current_player()}, enter your move's row (0-2): "))
             col = int(
                 input(f"Player {game.get_current_player()}, enter your move's column (0-2): "))
 
-            assert row >= 0 and row <= 2 and col >= 0 and col <= 2 and move in move_validator
+            assert row >= 0 and row <= 2 and col >= 0 and col <= 2
 
             real_move = PlayerMove(
-                move_validator[move], (row, col), game.get_current_player(), game.get_current_player())
+                PlayerMove.match_abbr_to_move(move), (row, col), game.get_current_player(), game.get_current_player())
 
             assert game.is_valid_move(real_move)
 
@@ -60,10 +65,30 @@ def test(game):
     make_move(game, MoveType.PLACE_SUPERPOS, 1, 0)
 
 
+def handle_pyodide():
+    # restored_game = jsons.load(game_in, Game)
+    clean_type = PlayerMove.match_abbr_to_move(pyodide_move["type"])
+    clean_move = PlayerMove(
+        clean_type, (pyodide_move["row"], pyodide_move["col"]), restored_game.get_current_player(), restored_game.get_current_turn())
+    restored_game.is_valid_move(clean_move)
+
+
 def play_game():
     game = Game()
     test(game)
-    get_player_moves(game)
+    if "pyodide" in sys.modules:
+        handle_pyodide()
+    else:
+        # dump = get_json(game)
+        # print(dump)
+        # new_g = Game(dump)
+        # print(new_g)
+        dump = jsonpickle.encode(game)
+        print(dump)
+        new_g = jsonpickle.decode(dump)
+        print(new_g)
+        print(game.board.nice_dump())
+        get_player_moves(game)
 
 
 if __name__ == "__main__":

@@ -50,5 +50,23 @@ class PlayerMove():
         return self.type in (MoveType.HGATE, MoveType.ZGATE, MoveType.NOTGATE,
                              MoveType.CNOTPLACE, MoveType.INVCNOTPLACE)
 
+    @staticmethod
+    def match_abbr_to_move(abbr: str) -> MoveType:
+        match abbr:
+            case "PLACE":
+                return MoveType.PLACE
+            case "PLACE_SUPERPOS":
+                return MoveType.PLACE_SUPERPOS
+            case "HGATE":
+                return MoveType.HGATE
+            case "ZGATE":
+                return MoveType.ZGATE
+            case "NOTGATE":
+                return MoveType.NOTGATE
+            case "CNOTPLACE":
+                return MoveType.CNOTPLACE
+
+        raise TypeError("Unsupported move type")
+
     def __str__(self) -> str:
         return f"{self.type} @ ({self.target[0]}, {self.target[1]})"
