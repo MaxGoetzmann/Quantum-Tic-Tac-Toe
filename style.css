@@ -79,13 +79,13 @@ body {
 
 .neon-text {
     font-family: 'Arial', sans-serif;
-    font-size: 5vh;
-    color: #e23030;
+    font-size: 48px;
+    color: #2859ad;
     text-align: center;
     text-transform: uppercase;
     position: relative;
     display: inline-block;
-    animation: neon 1.5s ease-in-out infinite alternate;
+    overflow: hidden;
   }
   
   .neon-text::before,
@@ -97,6 +97,7 @@ body {
     overflow: hidden;
     color: #00ffea;
     z-index: -1;
+    animation: ripple 2s linear infinite;
   }
   
   .neon-text::before {
@@ -107,11 +108,14 @@ body {
     text-shadow: 0 0 10px #00ffea, 0 0 20px #00ffea, 0 0 30px #00ffea, 0 0 40px #00ffea, 0 0 50px #00ffea, 0 0 60px #00ffea, 0 0 70px #00ffea;
   }
   
-  @keyframes neon {
+  @keyframes ripple {
     0% {
-      opacity: 1;
+      transform: scaleY(0);
+    }
+    50% {
+      transform: scaleY(10);
     }
     100% {
-      opacity: 0.5;
+      transform: scaleY(0);
     }
   }

@@ -6,14 +6,14 @@ from game import Game
 from player_move import PlayerMove, MoveType
 
 CYCLE = 1
-pyodide_move = {}
 board_out = [
             [None, None, None],
             [None, None, None],
             [None, None, None],
 ]
 game_out = {}
-game_in = {}
+player_won = ""
+move_success = False
 
 
 def get_player_moves(game: Game):
@@ -60,15 +60,18 @@ def test(game):
 
 
 def handle_pyodide():
-    global pyodide_first_pass, board_out, game_out
+    global pyodide_first_pass, board_out, game_out, player_won, move_success
     game = None
     if pyodide_first_pass:
         print("first pass")
         game = Game()
         test(game)
-    else:
-        print("second pass attempting to load", game_in)
-        game = jsonpickle.decode(game_in)
+        board_out = game.nice_dump()
+        game_out = jsonpickle.encode(game)
+        return
+
+    print("second pass attempting to load", game_in)
+    game: Game = jsonpickle.decode(game_in)
     clean_type = PlayerMove.match_abbr_to_move(pyodide_move["type"])
     clean_move = PlayerMove(
         clean_type,
@@ -77,9 +80,14 @@ def handle_pyodide():
         game.get_current_player(),
         game.get_current_turn())
     if game.is_valid_move(clean_move):
+        move_success = True
         game.apply_move(clean_move)
+        if game.is_game_over():
+            player_won = game.check_win().get_selection()
         board_out = game.nice_dump()
         game_out = jsonpickle.encode(game)
+    else:
+        move_success = False
 
 
 def play_game():
