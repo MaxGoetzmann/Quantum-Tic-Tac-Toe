@@ -72,13 +72,15 @@ def handle_pyodide():
         game = jsonpickle.decode(game_in)
     clean_type = PlayerMove.match_abbr_to_move(pyodide_move["type"])
     clean_move = PlayerMove(
-        clean_type, (pyodide_move["row"],
-                     pyodide_move["col"]), game.get_current_player(),
+        clean_type,
+        (pyodide_move["row"],
+         pyodide_move["col"]),
+        game.get_current_player(),
         game.get_current_turn())
     if game.is_valid_move(clean_move):
         game.apply_move(clean_move)
         board_out = game.nice_dump()
-        game_out = json.dumps(jsonpickle.encode(game))
+        game_out = jsonpickle.encode(game)
 
 
 def play_game():
