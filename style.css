@@ -1,0 +1,77 @@
+/* style.css */
+body {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+#drag-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    border-right: 2px solid #ccc;
+    height: 100%;
+}
+
+.drag-item {
+    cursor: grab;
+    padding: 10px;
+    border-radius: 50%; /* Makes the items circular */
+    border: 1px solid #333;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-weight: bold;
+    user-select: none; /* Prevents the text from being selected during drag */
+}
+
+#tic-tac-toe-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    padding: 10px;
+    width: 60vw; /* Responsive width */
+    max-width: 600px; /* Max width to ensure cells don't become too large */
+    aspect-ratio: 1; /* Keeps the board square */
+    margin: auto;
+}
+
+.cell {
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    border-radius: 20%; /* Makes the items circular */
+    justify-content: center;
+    font-size: 2em;
+    border: 1px solid #333;
+    aspect-ratio: 1; /* Keeps cells square */
+    color: #333;
+    transition: background-color 0.2s; /* Smooth background transition */
+}
+
+.cell:hover {
+    background-color: #e4e4e4; /* Hover effect */
+}
+
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #drag-items {
+        flex-direction: row;
+        border-right: none;
+        border-bottom: 2px solid #ccc;
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    #tic-tac-toe-board {
+        width: 80vw;
+    }
+}

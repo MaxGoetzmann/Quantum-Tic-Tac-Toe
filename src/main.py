@@ -17,12 +17,6 @@ game_in = {}
 pyodide_first_pass = False
 
 
-def get_json(obj):
-    return json.loads(
-        json.dumps(obj, default=lambda o: getattr(o, '__dict__', str(o)))
-    )
-
-
 def get_player_moves(game: Game):
     while True:
         if game.is_game_over():
@@ -72,7 +66,7 @@ def handle_pyodide():
         game = Game()
         test(game)
     else:
-        game = jsonpickle.decode(game_in)
+        game = jsonpickle.decode(json.loads(game_in))
     clean_type = PlayerMove.match_abbr_to_move(pyodide_move["type"])
     clean_move = PlayerMove(
         clean_type, (pyodide_move["row"],
@@ -81,7 +75,7 @@ def handle_pyodide():
     if game.is_valid_move(clean_move):
         game.apply_move(clean_move)
         board_out = game.nice_dump()
-        game_out = jsonpickle.encode(game)
+        game_out = json.dumps(jsonpickle.encode(game))
 
 
 def play_game():

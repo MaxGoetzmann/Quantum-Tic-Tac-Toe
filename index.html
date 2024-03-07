@@ -3,12 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Python Game on Web</title>
+    <title>Quantum Tic-Tac-Toe</title>
+    <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
   </head>
   <body>
-    <h1>Python Game on Web</h1>
-    <div id="output">Game will load here...</div>
+    <div class="game-container">
+      <div id="drag-items">
+        <div class="drag-item" id="drag-x" draggable="true">X</div>
+        <div class="drag-item" id="drag-o" draggable="true">O</div>
+        <div class="drag-item" id="drag-a" draggable="true">A</div>
+        <div class="drag-item" id="drag-b" draggable="true">B</div>
+        <div class="drag-item" id="drag-c" draggable="true">C</div>
+      </div>
+
+      <div id="tic-tac-toe-board">
+        <div class="cell" id="cell-1"></div>
+        <div class="cell" id="cell-2"></div>
+        <div class="cell" id="cell-3"></div>
+        <div class="cell" id="cell-4"></div>
+        <div class="cell" id="cell-5"></div>
+        <div class="cell" id="cell-6"></div>
+        <div class="cell" id="cell-7"></div>
+        <div class="cell" id="cell-8"></div>
+        <div class="cell" id="cell-9"></div>
+      </div>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>

@@ -81,9 +81,13 @@ async function loadPyodideAndRun() {
             await micropip.install("numpy")
             await micropip.install("jsonpickle")
         `).then(a => {
-        pyodide.runPython(mainFile)
-        let my_namespace = pyodide.globals.get("game_out");
-        console.log(my_namespace)
+        let namespace = pyodide.toPy({ pyodide_first_pass: true, game_out: null, game_in: null });
+        pyodide.runPython(mainFile, { globals: namespace })
+        pyodide.globals.toJs().forEach(g => {
+            console.log(g)
+        })
+        let my_namespace = pyodide.globals.get("dict")();
+        console.log(my_namespace.get("game_out"))
         requestAnimationFrame(gameLoop);
     })
     console.log("post py")
@@ -115,6 +119,39 @@ window.onbeforeunload = function () {
     console.log("leaving")
     doMoveRequest(undefined, undefined, undefined, undefined, undefined, true)
 }
+
+// script.js
+document.addEventListener('DOMContentLoaded', () => {
+    const dragItems = document.querySelectorAll('#drag-items > div');
+    const cells = document.querySelectorAll('.cell');
+
+    dragItems.forEach(item => {
+        item.addEventListener('dragstart', handleDragStart);
+    });
+
+    cells.forEach(cell => {
+        cell.addEventListener('dragover', handleDragOver);
+        cell.addEventListener('drop', handleDrop);
+    });
+
+    function handleDragStart(e) {
+        e.dataTransfer.setData('text', e.target.id);
+    }
+
+    function handleDragOver(e) {
+        e.preventDefault();
+    }
+
+    function handleDrop(e) {
+        e.preventDefault();
+        const id = e.dataTransfer.getData('text');
+        const draggableElement = document.getElementById(id);
+        if (!e.target.textContent) { // Prevents overwriting cells
+            e.target.textContent = draggableElement.textContent;
+        }
+    }
+});
+
 
 // main()
 loadPyodideAndRun();
