@@ -11,8 +11,6 @@ class PlayerPiece(Enum):
     """
     O: int = 0
     X: int = 1
-    O_WIN_STATE: np.ndarray[np.float32] = [1.0, 0]
-    X_WIN_STATE: np.ndarray[np.float32] = [0, 1.0]
 
 
 class Player():
@@ -27,5 +25,14 @@ class Player():
     piece_selection: PlayerPiece
     went_first: bool
 
-    def __init__(self, piece_selection: Union[None, PlayerPiece]) -> None:
+    def __init__(self, piece_selection: Union[None, PlayerPiece], first: bool) -> None:
         self.piece_selection = piece_selection
+        self.went_first = first
+
+    def get_selection(self) -> PlayerPiece:
+        return self.piece_selection
+
+    def __str__(self) -> str:
+        if self.piece_selection == PlayerPiece.O:
+            return "O"
+        return "X"

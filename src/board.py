@@ -1,15 +1,18 @@
 """Board"""
 
 from typing import Union
-from piece import Piece
-from player import Player, PlayerPiece
+from piece import Piece, PieceStates
+from player_move import OneQubitMove
+from player import PlayerPiece
+from gate import Gate
+import numpy as np
 
 
 class Board():
     """
     """
 
-    board: list[list[Union[None, Piece]]]
+    board: list[list[Union[None, Piece, Gate]]]
 
     def __init__(self) -> None:
         self.board = [
@@ -18,18 +21,32 @@ class Board():
             [None, None, None],
         ]
 
-    def check_win(self) -> Union[Player, None]:
-        """
-        """
+    def place(self, obj: Union[Piece, Gate], target: OneQubitMove) -> None:
+        self.board[target[0]][target[1]] = obj
 
-        win_conditions = [
-            [self.board[0][0], self.board[0][1], self.board[0][2]],
-            [self.board[1][0], self.board[1][1], self.board[1][2]],
-            [self.board[2][0], self.board[2][1], self.board[2][2]],
-            [self.board[0][0], self.board[1][0], self.board[2][0]],
-            [self.board[0][1], self.board[1][1], self.board[2][1]],
-            [self.board[0][2], self.board[1][2], self.board[2][2]],
-            [self.board[0][0], self.board[1][1], self.board[2][2]],
-            [self.board[2][0], self.board[1][1], self.board[0][2]],
-        ]
-        return None
+    def is_piece(self, target: OneQubitMove) -> bool:
+        return isinstance(self.board[target[0]][target[1]]) == Piece
+
+    def is_gate(self, target: OneQubitMove) -> bool:
+        return isinstance(self.board[target[0]][target[1]]) == Gate
+
+    def get_square(self, target: OneQubitMove) -> Union[Piece, Gate, None]:
+        return self.board[target[0]][target[1]]
+
+    def get_owner(self, target: OneQubitMove) -> Union[PlayerPiece, None]:
+        if not self.is_piece(target):
+            return None
+        return self.board[target[0]][target[1]].get_owner()
+
+    def __str__(self) -> str:
+        out = ""
+        for row in self.board:
+            out += "|"
+            for col in row:
+                if col is None:
+                    out += " "
+                else:
+                    out += str(col)
+                out += "|"
+            out += "\n"
+        return out[:-1]

@@ -82,7 +82,15 @@ async function loadPyodideAndRun() {
     // ....
 }
 
-function doMoveRequest(move, row, col, row2 = null, col2 = null) {
+function doMoveRequest(move, row, col, row2, col2, unload) {
+    if (unload != undefined) {
+        pyodide.globals.set("pyodide_move",
+            {
+                unload: true
+            }
+        )
+        return
+    }
     pyodide.globals.set("pyodide_move",
         {
             move: MoveType[move],
@@ -96,9 +104,8 @@ function doMoveRequest(move, row, col, row2 = null, col2 = null) {
 }
 
 window.onbeforeunload = function () {
-    doMoveRequest({
-        unload: true
-    })
+    console.log("leaving")
+    doMoveRequest(undefined, undefined, undefined, undefined, undefined, true)
 }
 
 // main()
