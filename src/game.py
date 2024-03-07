@@ -131,5 +131,8 @@ class Game():
     def is_game_over(self) -> bool:
         return self.game_ended
 
+    def nice_dump(self) -> list[list[Union[str]]]:
+        return self.board.nice_dump()
+
     def __str__(self) -> str:
         return str(self.board)

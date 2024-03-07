@@ -5,7 +5,7 @@ import jsonpickle
 from game import Game
 from player_move import PlayerMove, MoveType
 
-CYCLE = 0.4
+CYCLE = 1
 pyodide_move = {}
 board_out = [
             [None, None, None],
@@ -14,6 +14,7 @@ board_out = [
 ]
 game_out = {}
 game_in = {}
+pyodide_first_pass = False
 
 
 def get_json(obj):
@@ -48,7 +49,7 @@ def get_player_moves(game: Game):
         except:
             print("Input is wrong.")
 
-        time.sleep(1)
+        time.sleep(CYCLE)
 
 
 def make_move(game, type, row, col):
@@ -66,29 +67,36 @@ def test(game):
 
 
 def handle_pyodide():
-    # restored_game = jsons.load(game_in, Game)
+    game = None
+    if pyodide_first_pass:
+        game = Game()
+        test(game)
+    else:
+        game = jsonpickle.decode(game_in, Game)
     clean_type = PlayerMove.match_abbr_to_move(pyodide_move["type"])
     clean_move = PlayerMove(
-        clean_type, (pyodide_move["row"], pyodide_move["col"]), restored_game.get_current_player(), restored_game.get_current_turn())
-    restored_game.is_valid_move(clean_move)
+        clean_type, (pyodide_move["row"],
+                     pyodide_move["col"]), game.get_current_player(),
+        game.get_current_turn())
+    if game.is_valid_move(clean_move):
+        game.apply_move(clean_move)
+        board_out = game.nice_dump()
+        game_out = jsonpickle.encode(game)
 
 
 def play_game():
-    game = Game()
-    test(game)
     if "pyodide" in sys.modules:
         handle_pyodide()
-    else:
-        # dump = get_json(game)
-        # print(dump)
-        # new_g = Game(dump)
-        # print(new_g)
-        dump = jsonpickle.encode(game)
-        print(dump)
-        new_g = jsonpickle.decode(dump)
-        print(new_g)
-        print(game.board.nice_dump())
-        get_player_moves(game)
+        return
+
+    game = Game()
+    test(game)
+    dump = jsonpickle.encode(game)
+    print(dump)
+    new_g = jsonpickle.decode(dump)
+    print(new_g)
+    print(game.board.nice_dump())
+    get_player_moves(game)
 
 
 if __name__ == "__main__":
