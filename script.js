@@ -95,6 +95,12 @@ function doMoveRequest(move, row, col, row2 = null, col2 = null) {
     console.log(pyodide.globals.get("pyodide_move"))
 }
 
+window.onbeforeunload = function () {
+    doMoveRequest({
+        unload: true
+    })
+}
+
 // main()
 loadPyodideAndRun();
 

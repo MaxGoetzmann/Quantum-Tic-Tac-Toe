@@ -1,7 +1,7 @@
 import time
 
-CYCLE = 0.3
-pyodide_move = None
+CYCLE = 0.4
+pyodide_move = {}
 
 
 def initialize_board():
@@ -58,6 +58,11 @@ def play_game():
     board = initialize_board()
     while True:
         print(pyodide_move)
+
+        # Don't infinite loop which upsets computer.
+        if "unload" in pyodide_move:
+            break
+
         time.sleep(CYCLE)
 
 
