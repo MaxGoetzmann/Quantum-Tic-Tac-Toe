@@ -2,6 +2,10 @@ newMove = false
 mainFile = null
 pyodide = null
 
+// What python provides
+boardState = null
+gameState = null
+
 const MoveType = {
     PLACE: 0,
     HGATE: 1,
@@ -80,15 +84,20 @@ async function loadPyodideAndRun() {
             # Install Python packages
             await micropip.install("numpy")
             await micropip.install("jsonpickle")
-        `).then(a => {
-        let namespace = pyodide.toPy({ pyodide_first_pass: true, game_out: null, game_in: null });
-        pyodide.runPython(mainFile, { globals: namespace })
-        pyodide.globals.toJs().forEach(g => {
-            console.log(g)
-        })
-        let my_namespace = pyodide.globals.get("dict")();
-        console.log(my_namespace.get("game_out"))
+        `).then(async () => {
+        let namespace = pyodide.toPy({ pyodide_first_pass: true, game_out: "", game_in: "", board_out: "" });
+        pyodide.runPython(mainFile, { globals: namespace });
+
+        // Accessing dictionaries and lists from Pyodide global space
+        let gameOut = pyodide.globals.get("game_out");
+
+        // Convert Python objects to JavaScript objects
+
+        console.log("game_out:", gameOut);
+        gameOut.destroy()
+
         requestAnimationFrame(gameLoop);
+
     })
     console.log("post py")
     // ....

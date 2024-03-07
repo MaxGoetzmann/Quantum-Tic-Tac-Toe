@@ -61,6 +61,7 @@ def test(game):
 
 
 def handle_pyodide():
+    global pyodide_first_pass, board_out, game_out
     game = None
     if pyodide_first_pass:
         game = Game()
