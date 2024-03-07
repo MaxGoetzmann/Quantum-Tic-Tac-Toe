@@ -1,4 +1,4 @@
-newMove = false
+newMove = null
 mainFile = null
 pyodide = null
 handleEvent = true;
@@ -64,15 +64,56 @@ async function fetchSrcFolder() {
     }
 }
 
+// Function to display win screen
+function showWinScreen(winner) {
+    const winScreen = document.getElementById('win-screen');
+    const winMessage = document.querySelector('.win-message');
+    winMessage.textContent = `Player ${winner} wins!`;
+    winScreen.classList.remove('hidden');
+}
+
+// Function to close win screen
+function closeWinScreen() {
+    const winScreen = document.getElementById('win-screen');
+    winScreen.classList.add('hidden');
+}
+
+// Event listener for the close button
+document.getElementById('close-button').addEventListener('click', closeWinScreen);
+
 function gameLoop() {
     // Game loop
     if (newMove) {
-        let my_namespace = pyodide.globals.get("dict")();
-        pyodide.runPython(mainFile);
-        newMove = false;
+        handleEvent = false;
+        let namespace = pyodide.toPy({ pyodide_first_pass: false, game_in: gameState, pyodide_move: newMove });
+        pyodide.runPython(mainFile, { globals: namespace });
+
+        // Accessing dictionaries and lists from Pyodide global space
+        gameState = namespace.get("game_out");
+        boardState = Array.from(namespace.get("board_out"), innerArray => Array.from(innerArray));
+        plotBoard(boardState)
+        print(gameState)
+        winner = namespace.get("player_won")
+        if (winner !== "None" && winner !== "") {
+            showWinScreen(winner)
+        }
+        newMove = null;
+        handleEvent = true;
     }
 
     requestAnimationFrame(gameLoop);
+}
+
+function plotBoard(board) {
+    for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < 3; col++) {
+            const id = row * 3 + col + 1
+            const cell = document.getElementById(`cell-${id}`);
+            if (board[row][col] !== "None") {
+                cell.textContent = board[row][col];
+            }
+        }
+    }
 }
 
 async function loadPyodideAndRun() {
@@ -86,15 +127,18 @@ async function loadPyodideAndRun() {
             await micropip.install("numpy")
             await micropip.install("jsonpickle")
         `).then(async () => {
-        let namespace = pyodide.toPy({ pyodide_first_pass: true, game_out: "", game_in: "", board_out: "" });
+        let namespace = pyodide.toPy({ pyodide_first_pass: true });
         pyodide.runPython(mainFile, { globals: namespace });
 
         // Accessing dictionaries and lists from Pyodide global space
-        let gameOut = pyodide.globals.get("game_out");
+        gameState = namespace.get("game_out");
+        boardState = Array.from(namespace.get("board_out"), innerArray => Array.from(innerArray));
+
+        plotBoard(boardState)
 
         // Convert Python objects to JavaScript objects
 
-        console.log("game_out:", gameOut);
+        console.log(boardState);
 
         requestAnimationFrame(gameLoop);
 
@@ -130,14 +174,12 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const id = e.dataTransfer.getData('text');
         const draggableElement = document.getElementById(id);
-        if (!e.target.textContent) { // Prevents overwriting cells
-            newMove = {
-                move: draggableElement.getAttribute("data-type"),
-                row: e.target.getAttribute("data-row"),
-                col: e.target.getAttribute("data-col"),
-            }
-            e.target.textContent = draggableElement.textContent;
+        newMove = {
+            move: draggableElement.getAttribute("data-type"),
+            row: parseInt(e.target.getAttribute("data-row")),
+            col: parseInt(e.target.getAttribute("data-col")),
         }
+        e.target.textContent = draggableElement.textContent;
     }
 });
 

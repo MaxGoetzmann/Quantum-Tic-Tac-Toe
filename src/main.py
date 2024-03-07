@@ -72,6 +72,7 @@ def handle_pyodide():
 
     print("second pass attempting to load", game_in)
     game: Game = jsonpickle.decode(game_in)
+    print(pyodide_move)
     clean_type = PlayerMove.match_abbr_to_move(pyodide_move["type"])
     clean_move = PlayerMove(
         clean_type,
