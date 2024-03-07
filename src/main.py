@@ -13,6 +13,7 @@ board_out = [
 ]
 game_out = {}
 player_won = ""
+player_turn = ""
 move_success = False
 
 
@@ -60,35 +61,33 @@ def test(game):
 
 
 def handle_pyodide():
-    global pyodide_first_pass, board_out, game_out, player_won, move_success
+    global pyodide_first_pass, board_out, game_out, player_won, move_success, player_turn
     game = None
     if pyodide_first_pass:
         print("first pass")
         game = Game()
         test(game)
-        board_out = game.nice_dump()
-        game_out = jsonpickle.encode(game)
-        return
-
-    print("second pass attempting to load", game_in)
-    game: Game = jsonpickle.decode(game_in)
-    print(pyodide_move)
-    clean_type = PlayerMove.match_abbr_to_move(pyodide_move["type"])
-    clean_move = PlayerMove(
-        clean_type,
-        (pyodide_move["row"],
-         pyodide_move["col"]),
-        game.get_current_player(),
-        game.get_current_turn())
-    if game.is_valid_move(clean_move):
-        move_success = True
-        game.apply_move(clean_move)
-        if game.is_game_over():
-            player_won = game.check_win().get_selection()
-        board_out = game.nice_dump()
-        game_out = jsonpickle.encode(game)
     else:
-        move_success = False
+        print("second pass attempting to load", game_in)
+        game: Game = jsonpickle.decode(game_in)
+        print(pyodide_move)
+        clean_type = PlayerMove.match_abbr_to_move(pyodide_move["type"])
+        clean_move = PlayerMove(
+            clean_type,
+            (pyodide_move["row"],
+             pyodide_move["col"]),
+            game.get_current_player(),
+            game.get_current_turn())
+        if game.is_valid_move(clean_move):
+            move_success = True
+            game.apply_move(clean_move)
+            if game.is_game_over():
+                player_won = game.check_win().get_selection()
+        else:
+            move_success = False
+    player_turn = game.get_current_player()
+    board_out = game.nice_dump()
+    game_out = jsonpickle.encode(game)
 
 
 def play_game():

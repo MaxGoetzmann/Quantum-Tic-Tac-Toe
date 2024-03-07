@@ -91,7 +91,8 @@ function gameLoop() {
         // Accessing dictionaries and lists from Pyodide global space
         gameState = namespace.get("game_out");
         boardState = Array.from(namespace.get("board_out"), innerArray => Array.from(innerArray));
-        plotBoard(boardState)
+        playerTurn = namespace.get("player_turn");
+        afterUpdate(boardState, playerTurn)
         print(gameState)
         winner = namespace.get("player_won")
         if (winner !== "None" && winner !== "") {
@@ -102,6 +103,10 @@ function gameLoop() {
     }
 
     requestAnimationFrame(gameLoop);
+}
+
+function afterUpdate(board, player_turn) {
+    plotBoard(board);
 }
 
 function plotBoard(board) {
@@ -133,8 +138,9 @@ async function loadPyodideAndRun() {
         // Accessing dictionaries and lists from Pyodide global space
         gameState = namespace.get("game_out");
         boardState = Array.from(namespace.get("board_out"), innerArray => Array.from(innerArray));
+        playerTurn = namespace.get("player_turn");
 
-        plotBoard(boardState)
+        afterUpdate(boardState, playerTurn)
 
         // Convert Python objects to JavaScript objects
 
@@ -172,17 +178,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleDrop(e) {
         e.preventDefault();
+        if (!handleEvent) return;
         const id = e.dataTransfer.getData('text');
         const draggableElement = document.getElementById(id);
         newMove = {
-            move: draggableElement.getAttribute("data-type"),
+            type: draggableElement.getAttribute("data-type"),
             row: parseInt(e.target.getAttribute("data-row")),
             col: parseInt(e.target.getAttribute("data-col")),
         }
-        e.target.textContent = draggableElement.textContent;
     }
 });
-
 
 // main()
 loadPyodideAndRun();
