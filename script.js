@@ -1,4 +1,16 @@
-MAIN_FILE = null
+main_file = null
+pyodide = null
+
+const MoveType = {
+    PLACE: 0,
+    HGATE: 1,
+    ZGATE: 2,
+    NOTGATE: 3,
+    CNOTPLACE: 4,
+    INVCNOTPLACE: 5,
+    PLACE_SUPERPOS: 6,
+};
+
 
 async function fetchRawTextData(url) {
     try {
@@ -14,7 +26,7 @@ async function fetchRawTextData(url) {
     }
 }
 
-async function fetchSrcFolder(pyodide) {
+async function fetchSrcFolder() {
     /* 
         Bypassing Git token "security".
         You have content read permissions for this repository only. Go wild.
@@ -33,7 +45,10 @@ async function fetchSrcFolder(pyodide) {
                 if (text === null) throw new Error(`Could not get file ${file.name} data.`)
 
                 // Save main file for execution
-                if (file.name === "main.py") MAIN_FILE = text;
+                if (file.name === "main.py") {
+                    main_file = text;
+                    console.log(main_file)
+                }
 
                 pyodide.FS.writeFile(`/${file.name}`, text, { encoding: "utf8" });
             });
@@ -44,7 +59,7 @@ async function fetchSrcFolder(pyodide) {
 }
 
 async function loadPyodideAndRun() {
-    let pyodide = await loadPyodide();
+    pyodide = await loadPyodide();
     await pyodide.loadPackage(["micropip"]); // Load any additional packages your game needs
     await fetchSrcFolder(pyodide)
     await pyodide.runPythonAsync(`
@@ -53,14 +68,31 @@ async function loadPyodideAndRun() {
             # Install Python packages
             await micropip.install("numpy")
         `).then(a => {
-        pyodide.runPythonAsync(MAIN_FILE)
+        pyodide.runPythonAsync(main_file)
             .then(a => {
-                pyodide.globals.get('ROW').toJs();
+                pyodide.globals.set("pyodide_row", 0)
+                console.log(pyodide.globals.get("pyodide_row"));
+                pyodide.globals.set("pyodide_row", 1)
+                console.log(pyodide.globals.get("pyodide_row"));
             }).catch(error => {
                 console.log(error);
             })
     })
     console.log("post py")
+    // ....
+}
+
+function doMoveRequest(move, row, col, row2 = null, col2 = null) {
+    pyodide.globals.set("pyodide_move",
+        {
+            move: MoveType[move],
+            row: row,
+            col: col,
+            row2: row2,
+            col2: col2,
+        }
+    )
+    console.log(pyodide.globals.get("pyodide_move"))
 }
 
 // main()

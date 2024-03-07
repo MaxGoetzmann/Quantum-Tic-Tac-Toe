@@ -15,6 +15,7 @@ class MoveType(Enum):
     NOTGATE = 3
     CNOTPLACE = 4
     INVCNOTPLACE = 5
+    PLACE_SUPERPOS = 6
 
 
 OneQubitMove = tuple(int, int)

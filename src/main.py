@@ -1,5 +1,7 @@
-ROW = -1
-COL = -1
+import time
+
+CYCLE = 0.3
+pyodide_move = None
 
 
 def initialize_board():
@@ -54,20 +56,9 @@ def get_player_move(board, player):
 
 def play_game():
     board = initialize_board()
-    # current_player = "X"
-    # while True:
-    #     print_board(board)
-    #     row, col = get_player_move(board, current_player)
-    #     board[row][col] = current_player
-    #     if check_win(board, current_player):
-    #         print_board(board)
-    #         print(f"Player {current_player} wins!")
-    #         break
-    #     if check_tie(board):
-    #         print_board(board)
-    #         print("It's a tie!")
-    #         break
-    #     current_player = "O" if current_player == "X" else "X"
+    current_player = "X"
+    while time.sleep(CYCLE):
+        print(pyodide_move)
 
 
 if __name__ == "__main__":
