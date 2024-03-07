@@ -1,3 +1,5 @@
+MAIN_FILE = null
+
 async function fetchRawTextData(url) {
     try {
         const response = await fetch(url, { mode: "cors" });
@@ -24,13 +26,16 @@ async function fetchSrcFolder(pyodide) {
         "Authorization": `token ${keypt1}${keypt2}`
     }
     try {
-        console.log({ headers })
         const response = await fetch(apiUrl, { headers });
         const data = await response.json();
         data.forEach(file => {
             fetchRawTextData(file.download_url).then(text => {
                 if (text === null) throw new Error(`Could not get file ${file.name} data.`)
-                pyodide.FS.writeFile(`/${file.name}`, text, { encoding: "utf8" })
+
+                // Save main file for execution
+                if (file.name === "main.py") MAIN_FILE = text;
+
+                pyodide.FS.writeFile(`/${file.name}`, text, { encoding: "utf8" });
             });
         });
     } catch (error) {
@@ -42,28 +47,18 @@ async function loadPyodideAndRun() {
     let pyodide = await loadPyodide();
     await pyodide.loadPackage(["micropip"]); // Load any additional packages your game needs
     await fetchSrcFolder(pyodide)
-    pyodide.runPythonAsync(`
+    await pyodide.runPythonAsync(`
             import micropip
-            import sys
 
             # Install Python packages
             await micropip.install("numpy")
-
-            # Your Python game code here
-            print("Hello from Python!")  # Example Python code
-
-            original_argv = sys.argv.copy()
-            try:
-                sys.argv = ["/main.py", "0", "1"]
-                with open("/main.py", "r", encoding="utf-8") as f:
-                    code = f.read()
-                    exec(code)
-            finally:
-                sys.argv = original_argv
         `).then(a => {
-        pyodide.globals.get('x').toJs();
-    }).catch(error => {
-        console.log(error);
+        pyodide.runPythonAsync(MAIN_FILE)
+            .then(a => {
+                pyodide.globals.get('ROW').toJs();
+            }).catch(error => {
+                console.log(error);
+            })
     })
     console.log("post py")
 }
