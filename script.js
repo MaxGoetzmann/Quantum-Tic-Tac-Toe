@@ -7,16 +7,6 @@ handleEvent = true;
 boardState = null
 gameState = null
 
-const MoveType = {
-    PLACE: 0,
-    HGATE: 1,
-    ZGATE: 2,
-    NOTGATE: 3,
-    CNOTPLACE: 4,
-    INVCNOTPLACE: 5,
-    PLACE_SUPERPOS: 6,
-};
-
 
 async function fetchRawTextData(url) {
     try {
