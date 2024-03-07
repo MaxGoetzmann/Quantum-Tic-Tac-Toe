@@ -1,6 +1,7 @@
 newMove = false
 mainFile = null
 pyodide = null
+handleEvent = true;
 
 // What python provides
 boardState = null
@@ -94,39 +95,12 @@ async function loadPyodideAndRun() {
         // Convert Python objects to JavaScript objects
 
         console.log("game_out:", gameOut);
-        gameOut.destroy()
 
         requestAnimationFrame(gameLoop);
 
     })
     console.log("post py")
     // ....
-}
-
-function doMoveRequest(move, row, col, row2, col2, unload) {
-    if (unload != undefined) {
-        pyodide.globals.set("pyodide_move",
-            {
-                unload: true
-            }
-        )
-        return
-    }
-    pyodide.globals.set("pyodide_move",
-        {
-            move: MoveType[move],
-            row: row,
-            col: col,
-            row2: row2,
-            col2: col2,
-        }
-    )
-    console.log(pyodide.globals.get("pyodide_move"))
-}
-
-window.onbeforeunload = function () {
-    console.log("leaving")
-    doMoveRequest(undefined, undefined, undefined, undefined, undefined, true)
 }
 
 // script.js
@@ -144,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function handleDragStart(e) {
+        if (!handleEvent) return;
         e.dataTransfer.setData('text', e.target.id);
     }
 
@@ -156,6 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const id = e.dataTransfer.getData('text');
         const draggableElement = document.getElementById(id);
         if (!e.target.textContent) { // Prevents overwriting cells
+            newMove = {
+                move: draggableElement.getAttribute("data-type"),
+                row: e.target.getAttribute("data-row"),
+                col: e.target.getAttribute("data-col"),
+            }
             e.target.textContent = draggableElement.textContent;
         }
     }

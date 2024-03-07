@@ -2,7 +2,7 @@
 body {
     display: flex;
     justify-content: space-between;
-    padding: 20px;
+    padding: 10vh;
     height: 100vh;
     box-sizing: border-box;
 }
@@ -10,17 +10,18 @@ body {
 #drag-items {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
     align-items: center;
-    padding: 10px;
-    border-right: 2px solid #ccc;
+    padding: 20px;
+    margin-left: 10vh; 
+    /* border-right: 2px solid #ccc; */
     height: 100%;
 }
 
 .drag-item {
     cursor: grab;
-    padding: 10px;
-    border-radius: 50%; /* Makes the items circular */
+    padding: 5vh;
+    border-radius: 35%; /* Makes the items circular */
     border: 1px solid #333;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);

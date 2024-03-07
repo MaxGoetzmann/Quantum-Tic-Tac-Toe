@@ -94,6 +94,4 @@ def play_game():
     get_player_moves(game)
 
 
-if __name__ == "__main__":
-    print("IN THE MAIN FUNCTION")
-    play_game()
+play_game()

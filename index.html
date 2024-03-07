@@ -8,27 +8,42 @@
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
   </head>
   <body>
-    <div class="game-container">
-      <div id="drag-items">
-        <div class="drag-item" id="drag-x" draggable="true">X</div>
-        <div class="drag-item" id="drag-o" draggable="true">O</div>
-        <div class="drag-item" id="drag-a" draggable="true">A</div>
-        <div class="drag-item" id="drag-b" draggable="true">B</div>
-        <div class="drag-item" id="drag-c" draggable="true">C</div>
+    <!-- <div class="game-container"> -->
+    <div id="drag-items">
+      <div class="drag-item" id="drag-x" draggable="true" data-type="PLACE">
+        X
       </div>
-
-      <div id="tic-tac-toe-board">
-        <div class="cell" id="cell-1"></div>
-        <div class="cell" id="cell-2"></div>
-        <div class="cell" id="cell-3"></div>
-        <div class="cell" id="cell-4"></div>
-        <div class="cell" id="cell-5"></div>
-        <div class="cell" id="cell-6"></div>
-        <div class="cell" id="cell-7"></div>
-        <div class="cell" id="cell-8"></div>
-        <div class="cell" id="cell-9"></div>
+      <div
+        class="drag-item"
+        id="drag-o"
+        draggable="true"
+        data-type="PLACE_SUPERPOSITION"
+      >
+        X/O
+      </div>
+      <div class="drag-item" id="drag-a" draggable="true" data-type="HGATE">
+        H
+      </div>
+      <div class="drag-item" id="drag-b" draggable="true" data-type="ZGATE">
+        Z
+      </div>
+      <div class="drag-item" id="drag-c" draggable="true" data-type="NOTGATE">
+        NOT
       </div>
     </div>
+
+    <div id="tic-tac-toe-board">
+      <div class="cell" id="cell-1" data-row="0" data-col="0"></div>
+      <div class="cell" id="cell-2" data-row="0" data-col="1"></div>
+      <div class="cell" id="cell-3" data-row="0" data-col="2"></div>
+      <div class="cell" id="cell-4" data-row="1" data-col="0"></div>
+      <div class="cell" id="cell-5" data-row="1" data-col="1"></div>
+      <div class="cell" id="cell-6" data-row="1" data-col="2"></div>
+      <div class="cell" id="cell-7" data-row="2" data-col="0"></div>
+      <div class="cell" id="cell-8" data-row="2" data-col="1"></div>
+      <div class="cell" id="cell-9" data-row="2" data-col="2"></div>
+    </div>
+    <!-- </div> -->
 
     <script src="script.js"></script>
   </body>
