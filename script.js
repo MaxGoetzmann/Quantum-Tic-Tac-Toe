@@ -42,7 +42,7 @@ async function loadPyodideAndRun() {
     let pyodide = await loadPyodide();
     await pyodide.loadPackage(["micropip"]); // Load any additional packages your game needs
     await fetchSrcFolder(pyodide)
-    await pyodide.runPythonAsync(`
+    pyodide.runPythonAsync(`
             import micropip
             import sys
 
@@ -60,7 +60,12 @@ async function loadPyodideAndRun() {
                     exec(code)
             finally:
                 sys.argv = original_argv
-        `);
+        `).then(a => {
+        pyodide.globals.get('x').toJs();
+    }).catch(error => {
+        console.log(error);
+    })
+    console.log("post py")
 }
 
 // main()
