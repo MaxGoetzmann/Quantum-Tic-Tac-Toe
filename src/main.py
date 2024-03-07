@@ -64,10 +64,12 @@ def handle_pyodide():
     global pyodide_first_pass, board_out, game_out
     game = None
     if pyodide_first_pass:
+        print("first pass")
         game = Game()
         test(game)
     else:
-        game = jsonpickle.decode(json.loads(game_in))
+        print("second pass attempting to load", game_in)
+        game = jsonpickle.decode(game_in)
     clean_type = PlayerMove.match_abbr_to_move(pyodide_move["type"])
     clean_move = PlayerMove(
         clean_type, (pyodide_move["row"],

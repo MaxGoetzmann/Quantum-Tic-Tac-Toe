@@ -76,3 +76,42 @@ body {
         width: 80vw;
     }
 }
+
+.neon-text {
+    font-family: 'Arial', sans-serif;
+    font-size: 5vh;
+    color: #e23030;
+    text-align: center;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-block;
+    animation: neon 1.5s ease-in-out infinite alternate;
+  }
+  
+  .neon-text::before,
+  .neon-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    color: #00ffea;
+    z-index: -1;
+  }
+  
+  .neon-text::before {
+    text-shadow: 0 0 5px #00ffea, 0 0 10px #00ffea, 0 0 15px #00ffea, 0 0 20px #00ffea, 0 0 25px #00ffea, 0 0 30px #00ffea, 0 0 35px #00ffea;
+  }
+  
+  .neon-text::after {
+    text-shadow: 0 0 10px #00ffea, 0 0 20px #00ffea, 0 0 30px #00ffea, 0 0 40px #00ffea, 0 0 50px #00ffea, 0 0 60px #00ffea, 0 0 70px #00ffea;
+  }
+  
+  @keyframes neon {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.5;
+    }
+  }
