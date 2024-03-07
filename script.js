@@ -93,7 +93,7 @@ function gameLoop() {
         boardState = Array.from(namespace.get("board_out"), innerArray => Array.from(innerArray));
         playerTurn = namespace.get("player_turn");
         afterUpdate(boardState, playerTurn)
-        print(gameState)
+        console.log(boardState)
         winner = namespace.get("player_won")
         if (winner !== "None" && winner !== "") {
             showWinScreen(winner)
@@ -141,9 +141,6 @@ async function loadPyodideAndRun() {
         playerTurn = namespace.get("player_turn");
 
         afterUpdate(boardState, playerTurn)
-
-        // Convert Python objects to JavaScript objects
-
         console.log(boardState);
 
         requestAnimationFrame(gameLoop);

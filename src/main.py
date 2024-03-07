@@ -66,11 +66,9 @@ def handle_pyodide():
     if pyodide_first_pass:
         print("first pass")
         game = Game()
-        test(game)
     else:
         print("second pass attempting to load", game_in)
         game: Game = jsonpickle.decode(game_in)
-        print(pyodide_move)
         clean_type = PlayerMove.match_abbr_to_move(pyodide_move["type"])
         clean_move = PlayerMove(
             clean_type,
@@ -78,6 +76,7 @@ def handle_pyodide():
              pyodide_move["col"]),
             game.get_current_player(),
             game.get_current_turn())
+        print(clean_move)
         if game.is_valid_move(clean_move):
             move_success = True
             game.apply_move(clean_move)
@@ -85,7 +84,7 @@ def handle_pyodide():
                 player_won = game.check_win().get_selection()
         else:
             move_success = False
-    player_turn = game.get_current_player()
+    player_turn = game.get_current_player().get_selection()
     board_out = game.nice_dump()
     game_out = jsonpickle.encode(game)
 
