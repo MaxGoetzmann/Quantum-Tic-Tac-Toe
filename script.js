@@ -84,7 +84,6 @@ document.getElementById('close-button').addEventListener('click', closeWinScreen
 function gameLoop() {
     // Game loop
     if (newMove) {
-        handleEvent = false;
         let namespace = pyodide.toPy({ pyodide_first_pass: false, game_in: gameState, pyodide_move: newMove });
         pyodide.runPython(mainFile, { globals: namespace });
 
@@ -183,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
             row: parseInt(e.target.getAttribute("data-row")),
             col: parseInt(e.target.getAttribute("data-col")),
         }
+        handleEvent = false
     }
 });
 

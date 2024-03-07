@@ -69,6 +69,7 @@ def handle_pyodide():
     else:
         print("second pass attempting to load", game_in)
         game: Game = jsonpickle.decode(game_in)
+        print(pyodide_move)
         clean_type = PlayerMove.match_abbr_to_move(pyodide_move["type"])
         clean_move = PlayerMove(
             clean_type,
@@ -76,7 +77,6 @@ def handle_pyodide():
              pyodide_move["col"]),
             game.get_current_player(),
             game.get_current_turn())
-        print(clean_move)
         if game.is_valid_move(clean_move):
             move_success = True
             game.apply_move(clean_move)
