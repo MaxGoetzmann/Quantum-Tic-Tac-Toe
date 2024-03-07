@@ -17,31 +17,53 @@ def validate_move(row, col):
 
 
 def get_player_moves(game: Game):
+    move_validator = {i.value: i.name for i in MoveType}
     while True:
-        try:
-            move = int(
-                input(f"Player {game.get_current_player()}, enter your move's type (0-4): "))
-            row = int(
-                input(f"Player {game.get_current_player()}, enter your move's row (1-3): ")) - 1
-            col = int(
-                input(f"Player {game.get_current_player()}, enter your move's column (1-3): ")) - 1
+        if game.is_game_over():
+            break
 
-            assert row >= 0 and row <= 2 and col >= 0 and col <= 2 and move in MoveType
+        try:
+            print(game)
+            move = int(input(
+                f"Player {game.get_current_player()}, enter your move's type (0-4): "))
+            row = int(
+                input(f"Player {game.get_current_player()}, enter your move's row (0-2): "))
+            col = int(
+                input(f"Player {game.get_current_player()}, enter your move's column (0-2): "))
+
+            assert row >= 0 and row <= 2 and col >= 0 and col <= 2 and move in move_validator
 
             real_move = PlayerMove(
-                move, (row, col), game.get_current_player(), game.get_current_player())
+                move_validator[move], (row, col), game.get_current_player(), game.get_current_player())
 
-            if board[row][col] == " ":
-                return row, col
-            else:
-                print("This position is already taken. Please try another one.")
+            assert game.is_valid_move(real_move)
+
+            game.apply_move(real_move)
+
         except:
             print("Input is wrong.")
+
+        time.sleep(1)
+
+
+def make_move(game, type, row, col):
+    test_move = PlayerMove(type, (row, col),
+                           game.get_current_player(), game.get_current_turn())
+    game.apply_move(test_move)
+    print(game)
+
+
+def test(game):
+    make_move(game, MoveType.ZGATE, 0, 1)
+    make_move(game, MoveType.NOTGATE, 0, 2)
+    make_move(game, MoveType.ZGATE, 2, 2)
+    make_move(game, MoveType.PLACE_SUPERPOS, 1, 0)
 
 
 def play_game():
     game = Game()
-    game.print_board()
+    test(game)
+    return
     get_player_moves(game)
 
     # while True:

@@ -11,7 +11,7 @@ class GateType(Enum):
     NOT = 2
 
 
-class GateMatrix(Enum):
+class GateMatrix():
     INV_ROOT_2 = inv_root_2
     H = np.array([
         [inv_root_2, inv_root_2],
@@ -31,8 +31,8 @@ class Gate():
 
     type: GateType
 
-    def __init__(self, type: GateType) -> None:
-        self.type = type
+    def __init__(self, ty: GateType) -> None:
+        self.type = ty
 
     def __str__(self) -> str:
         if self.type == GateType.H:

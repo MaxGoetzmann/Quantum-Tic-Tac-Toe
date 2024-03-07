@@ -18,8 +18,8 @@ class MoveType(Enum):
     INVCNOTPLACE = 6
 
 
-OneQubitMove = tuple(int, int)
-TwoQubitMove = tuple(OneQubitMove, OneQubitMove)
+OneQubitMove = tuple[int]
+TwoQubitMove = tuple[OneQubitMove]
 
 
 class PlayerMove():
@@ -34,6 +34,8 @@ class PlayerMove():
     def __init__(self, type: MoveType, target: Union[OneQubitMove, TwoQubitMove], origin: Player, turn: int) -> None:
         self.type = type
         self.target = target
+        self.origin = origin
+        self.turn = turn
 
     def get_type(self) -> MoveType:
         return self.type
@@ -47,3 +49,6 @@ class PlayerMove():
     def is_gate(self) -> bool:
         return self.type in (MoveType.HGATE, MoveType.ZGATE, MoveType.NOTGATE,
                              MoveType.CNOTPLACE, MoveType.INVCNOTPLACE)
+
+    def __str__(self) -> str:
+        return f"{self.type} @ ({self.target[0]}, {self.target[1]})"

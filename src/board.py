@@ -5,7 +5,6 @@ from piece import Piece, PieceStates
 from player_move import OneQubitMove
 from player import PlayerPiece
 from gate import Gate
-import numpy as np
 
 
 class Board():
@@ -25,10 +24,10 @@ class Board():
         self.board[target[0]][target[1]] = obj
 
     def is_piece(self, target: OneQubitMove) -> bool:
-        return isinstance(self.board[target[0]][target[1]]) == Piece
+        return isinstance(self.get_square(target), Piece)
 
     def is_gate(self, target: OneQubitMove) -> bool:
-        return isinstance(self.board[target[0]][target[1]]) == Gate
+        return isinstance(self.get_square(target), Gate)
 
     def get_square(self, target: OneQubitMove) -> Union[Piece, Gate, None]:
         return self.board[target[0]][target[1]]
@@ -36,7 +35,7 @@ class Board():
     def get_owner(self, target: OneQubitMove) -> Union[PlayerPiece, None]:
         if not self.is_piece(target):
             return None
-        return self.board[target[0]][target[1]].get_owner()
+        return self.get_square(target).get_owner()
 
     def __str__(self) -> str:
         out = ""

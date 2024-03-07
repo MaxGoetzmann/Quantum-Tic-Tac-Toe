@@ -1,13 +1,12 @@
 """Piece"""
 
-from enum import Enum
 from typing import Union
-from gate import GateMatrix
 import numpy as np
-from player import Player, PlayerPiece
+from gate import GateMatrix
+from player import PlayerPiece
 
 
-class PieceStates(Enum):
+class PieceStates():
     """
     Different states and what they mean.
     """
@@ -42,10 +41,13 @@ class Piece():
         maximum compatibility.
         """
 
-        if self.state[0] < 0:
-            self.state = self.state * -1
-
         out = np.round(self.state, 1)
+
+        if out[0] <= 0.1:
+            out = out * -1
+
+        if out[1] == -1:
+            out[1] = 1
 
         return out
 
@@ -53,9 +55,9 @@ class Piece():
         """
         Return enum of the player that won.
         """
-        if np.array_equal(self.state, PieceStates.O_WIN):
+        if np.array_equal(self.get_state(), PieceStates.O_WIN):
             return PlayerPiece.O
-        if np.array_equal(self.state, PieceStates.X_WIN):
+        if np.array_equal(self.get_state(), PieceStates.X_WIN):
             return PlayerPiece.X
         return None
 
@@ -72,6 +74,7 @@ class Piece():
         self.state = gate @ self.state
 
     def __str__(self) -> str:
+        print(self.get_state())
         if np.array_equal(self.get_state(), PieceStates.O_WIN):
             return "O"
         elif np.array_equal(self.get_state(), PieceStates.X_WIN):
