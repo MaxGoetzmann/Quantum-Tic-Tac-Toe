@@ -68,15 +68,15 @@ async function loadPyodideAndRun() {
             # Install Python packages
             await micropip.install("numpy")
         `).then(a => {
+
+        // Game loop
         pyodide.runPythonAsync(main_file)
-            .then(a => {
-                pyodide.globals.set("pyodide_row", 0)
-                console.log(pyodide.globals.get("pyodide_row"));
-                pyodide.globals.set("pyodide_row", 1)
-                console.log(pyodide.globals.get("pyodide_row"));
-            }).catch(error => {
-                console.log(error);
-            })
+
+        pyodide.globals.set("pyodide_row", 0)
+        console.log(pyodide.globals.get("pyodide_row"));
+        pyodide.globals.set("pyodide_row", 1)
+        console.log(pyodide.globals.get("pyodide_row"));
+
     })
     console.log("post py")
     // ....

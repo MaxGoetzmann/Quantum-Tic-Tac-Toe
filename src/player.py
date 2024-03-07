@@ -2,14 +2,17 @@
 
 from enum import Enum
 from typing import Union
+import numpy as np
 
 
 class PlayerPiece(Enum):
     """
     Player pieces they can choose.
     """
-    O = 0
-    X = 1
+    O: int = 0
+    X: int = 1
+    O_WIN_STATE: np.ndarray[np.float32] = [1.0, 0]
+    X_WIN_STATE: np.ndarray[np.float32] = [0, 1.0]
 
 
 class Player():
