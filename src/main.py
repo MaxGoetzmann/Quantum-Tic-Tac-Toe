@@ -72,7 +72,7 @@ def handle_pyodide():
         game = Game()
         test(game)
     else:
-        game = jsonpickle.decode(game_in, Game)
+        game = jsonpickle.decode(game_in)
     clean_type = PlayerMove.match_abbr_to_move(pyodide_move["type"])
     clean_move = PlayerMove(
         clean_type, (pyodide_move["row"],

@@ -79,8 +79,11 @@ async function loadPyodideAndRun() {
 
             # Install Python packages
             await micropip.install("numpy")
-            await micropip.install("jsons")
+            await micropip.install("jsonpickle")
         `).then(a => {
+        pyodide.runPython(mainFile)
+        let my_namespace = pyodide.globals.get("game_out");
+        console.log(my_namespace)
         requestAnimationFrame(gameLoop);
     })
     console.log("post py")
