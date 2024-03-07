@@ -56,9 +56,9 @@ def get_player_move(board, player):
 
 def play_game():
     board = initialize_board()
-    current_player = "X"
-    while time.sleep(CYCLE):
+    while True:
         print(pyodide_move)
+        time.sleep(CYCLE)
 
 
 if __name__ == "__main__":
