@@ -46,9 +46,6 @@ class Piece():
         if out[0] <= 0.1:
             out = out * -1
 
-        if out[1] == -1:
-            out[1] = 1
-
         return out
 
     def get_owner(self) -> Union[PlayerPiece, None]:
@@ -74,12 +71,13 @@ class Piece():
         self.state = gate @ self.state
 
     def __str__(self) -> str:
-        print(self.get_state())
-        if np.array_equal(self.get_state(), PieceStates.O_WIN):
+        state = np.abs(self.get_state())
+        print(state)
+        if np.array_equal(state, PieceStates.O_WIN):
             return "O"
-        elif np.array_equal(self.get_state(), PieceStates.X_WIN):
+        elif np.array_equal(state, PieceStates.X_WIN):
             return "X"
-        elif np.array_equal(self.get_state(), PieceStates.O_POS):
+        elif np.array_equal(state, PieceStates.O_POS):
             return "+"
-        elif np.array_equal(self.get_state(), PieceStates.X_NEG):
+        elif np.array_equal(state, PieceStates.X_NEG):
             return "-"

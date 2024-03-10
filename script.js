@@ -58,7 +58,7 @@ async function fetchSrcFolder() {
 function showWinScreen(winner) {
     const winScreen = document.getElementById('win-screen');
     const winMessage = document.querySelector('.win-message');
-    winMessage.textContent = `Player ${winner} wins!`;
+    winMessage.textContent = `Player ${winner[winner.length - 1]} wins!`;
     winScreen.classList.remove('hidden');
 }
 

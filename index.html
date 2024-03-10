@@ -4,55 +4,56 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quantum Tic-Tac-Toe</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
   </head>
   <body>
-    <div id="drag-items">
-      <div class="drag-item" id="drag-x" draggable="true" data-type="PLACE">
-        X
+    <div class="top-banner">Welcome to My Website!</div>
+    <div class="container">
+      <div id="drag-items">
+        <div class="drag-item" id="drag-x" draggable="true" data-type="PLACE">
+          X
+        </div>
+        <div
+          class="drag-item neon-text"
+          id="drag-o"
+          draggable="true"
+          data-type="PLACE_SUPERPOS"
+        >
+          X/O
+        </div>
+        <div class="drag-item" id="drag-a" draggable="true" data-type="HGATE">
+          H
+        </div>
+        <div class="drag-item" id="drag-b" draggable="true" data-type="ZGATE">
+          Z
+        </div>
+        <div class="drag-item" id="drag-c" draggable="true" data-type="NOTGATE">
+          NOT
+        </div>
       </div>
-      <div
-        class="drag-item"
-        id="drag-o"
-        draggable="true"
-        data-type="PLACE_SUPERPOS"
-      >
-        X/O
+
+      <div id="tic-tac-toe-board">
+        <div class="cell" id="cell-1" data-row="0" data-col="0"></div>
+        <div class="cell" id="cell-2" data-row="0" data-col="1"></div>
+        <div class="cell" id="cell-3" data-row="0" data-col="2"></div>
+        <div class="cell" id="cell-4" data-row="1" data-col="0"></div>
+        <div class="cell" id="cell-5" data-row="1" data-col="1"></div>
+        <div class="cell" id="cell-6" data-row="1" data-col="2"></div>
+        <div class="cell" id="cell-7" data-row="2" data-col="0"></div>
+        <div class="cell" id="cell-8" data-row="2" data-col="1"></div>
+        <div class="cell" id="cell-9" data-row="2" data-col="2"></div>
       </div>
-      <div
-        class="drag-item neon-text"
-        id="drag-a"
-        draggable="true"
-        data-type="HGATE"
-      >
-        H
-      </div>
-      <div class="drag-item" id="drag-b" draggable="true" data-type="ZGATE">
-        Z
-      </div>
-      <div class="drag-item" id="drag-c" draggable="true" data-type="NOTGATE">
-        NOT
+
+      <div id="win-screen" class="hidden">
+        <div class="win-message">Player X wins!</div>
+        <button id="close-button">Close</button>
       </div>
     </div>
-
-    <div id="tic-tac-toe-board">
-      <div class="cell" id="cell-1" data-row="0" data-col="0"></div>
-      <div class="cell" id="cell-2" data-row="0" data-col="1"></div>
-      <div class="cell" id="cell-3" data-row="0" data-col="2"></div>
-      <div class="cell" id="cell-4" data-row="1" data-col="0"></div>
-      <div class="cell" id="cell-5" data-row="1" data-col="1"></div>
-      <div class="cell" id="cell-6" data-row="1" data-col="2"></div>
-      <div class="cell" id="cell-7" data-row="2" data-col="0"></div>
-      <div class="cell" id="cell-8" data-row="2" data-col="1"></div>
-      <div class="cell" id="cell-9" data-row="2" data-col="2"></div>
-    </div>
-
-    <div id="win-screen" class="hidden">
-      <div class="win-message">Player X wins!</div>
-      <button id="close-button">Close</button>
-    </div>
-
     <script src="script.js"></script>
   </body>
 </html>
