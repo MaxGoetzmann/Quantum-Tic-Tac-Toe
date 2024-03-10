@@ -135,7 +135,6 @@ async function loadPyodideAndRun() {
         boardState = Array.from(namespace.get("board_out"), innerArray => Array.from(innerArray));
         playerTurn = namespace.get("player_turn");
 
-        console.log(playerTurn)
         afterUpdate(boardState, playerTurn)
         console.log(boardState);
 

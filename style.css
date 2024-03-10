@@ -57,14 +57,21 @@ body {
     gap: 20px;
     align-items: center;
     padding: 20px;
-    margin-left: 10vh; 
-    /* border-right: 2px solid #ccc; */
-    height: 100%;
+    margin-left: 20vh; 
+}
+
+#drag-items > * { /* This targets all direct children of #drag-items */
+  width: 100px; /* Set to desired width */
+  height: 100px; /* Set to desired height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .drag-item {
     cursor: grab;
-    padding: 5vh;
+    /* padding: 5vh; */
     border-radius: 35%; /* Makes the items circular */
     border: 1px solid var(--quantum-metallic-silver);
     background-color: var(--quantum-panel-bg);
@@ -112,7 +119,7 @@ body {
     #drag-items {
         flex-direction: row;
         border-right: none;
-        border-bottom: 2px solid #ccc;
+        border-bottom: 2px solid --quantum-metallic-silver;
         justify-content: center;
         width: 100%;
         margin-bottom: 20px;
@@ -125,7 +132,7 @@ body {
 
 .neon-text {
     font-size: 48px;
-    color: #c90000;
+    color: var(--quantum-x-piece);
     text-align: center;
     text-transform: uppercase;
     position: relative;
@@ -140,16 +147,16 @@ body {
     top: 0;
     left: 0;
     overflow: hidden;
-    color: #002ea4;
+    color: var(--quantum-x-piece);
     z-index: -1;
   }
   
   .neon-text::before {
-    text-shadow: 0 0 5px #00ffea, 0 0 10px #00ffea, 0 0 15px #00ffea, 0 0 20px #00ffea, 0 0 25px #00ffea, 0 0 30px #00ffea, 0 0 35px #00ffea;
+    text-shadow: 0 0 5px var(--quantum-o-piece), 0 0 10px var(--quantum-o-piece), 0 0 15px var(--quantum-o-piece), 0 0 20px var(--quantum-o-piece), 0 0 25px var(--quantum-o-piece), 0 0 30px var(--quantum-o-piece), 0 0 35px var(--quantum-o-piece);
   }
   
   .neon-text::after {
-    text-shadow: 0 0 10px #00ffea, 0 0 20px #00ffea, 0 0 30px #00ffea, 0 0 40px #00ffea, 0 0 50px #00ffea, 0 0 60px #00ffea, 0 0 70px #00ffea;
+    text-shadow: 0 0 10px var(--quantum-o-piece), 0 0 20px var(--quantum-o-piece), 0 0 30px var(--quantum-o-piece), 0 0 40px var(--quantum-o-piece), 0 0 50px var(--quantum-o-piece), 0 0 60px var(--quantum-o-piece), 0 0 70px var(--quantum-o-piece);
   }
   
   @keyframes neon {
