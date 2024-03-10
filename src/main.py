@@ -60,7 +60,6 @@ def test(game: Game):
     make_move(game, MoveType.NOTGATE, 0, 2)
     make_move(game, MoveType.ZGATE, 2, 2)
     make_move(game, MoveType.PLACE_SUPERPOS, 1, 0)
-    print(game.get_current_player())
 
 
 def handle_pyodide():
@@ -92,9 +91,7 @@ def handle_pyodide():
         print("first pass")
         game = Game()
     else:
-        print("second pass attempting to load", game_in)
         game: Game = jsonpickle.decode(game_in)
-        print(pyodide_move)
         clean_type = PlayerMove.match_abbr_to_move(pyodide_move["type"])
         clean_move = PlayerMove(
             clean_type,
