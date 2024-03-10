@@ -13,8 +13,8 @@ class PieceStates():
     """
     Different constant quantum states translated to their meaning.
     """
-    O_WIN: np.ndarray[np.float32] = [1.0, 0]
-    X_WIN: np.ndarray[np.float32] = [0, 1.0]
+    O_WIN: np.ndarray[np.float32] = np.array([1.0, 0])
+    X_WIN: np.ndarray[np.float32] = np.array([0, 1.0])
     O_POS: np.ndarray[np.float32] = np.round(
         [GateMatrix.INV_ROOT_2, GateMatrix.INV_ROOT_2], 1)
     X_NEG: np.ndarray[np.float32] = np.round(
@@ -49,7 +49,7 @@ class Piece():
 
         out = np.round(self.state, 1)
 
-        if out[0] <= 0.1:
+        if out[0] <= -0.1:
             out = out * -1
 
         return out
@@ -82,7 +82,6 @@ class Piece():
         Apply the Z gate to the state of this piece.
         """
         self.state = GateMatrix.Z @ self.state
-        print(self.state)
 
     def any_gate(self, gate) -> None:
         """
@@ -91,10 +90,10 @@ class Piece():
         self.state = gate @ self.state
 
     def __str__(self) -> str:
-        state = np.abs(self.get_state())
-        if np.array_equal(state, PieceStates.O_WIN):
+        state = self.get_state()
+        if np.array_equal(state, PieceStates.O_WIN) or np.array_equal(state, -1 * PieceStates.O_WIN):
             return "O"
-        elif np.array_equal(state, PieceStates.X_WIN):
+        elif np.array_equal(state, PieceStates.X_WIN) or np.array_equal(state, -1 * PieceStates.X_WIN):
             return "X"
         elif np.array_equal(state, PieceStates.O_POS):
             return "+"

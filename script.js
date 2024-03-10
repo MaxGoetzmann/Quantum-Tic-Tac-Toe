@@ -43,7 +43,6 @@ async function fetchSrcFolder() {
                 // Save main file for execution
                 if (file.name === "main.py") {
                     mainFile = text;
-                    console.log(mainFile)
                 }
 
                 pyodide.FS.writeFile(`./${file.name}`, text, { encoding: "utf8" });
