@@ -58,9 +58,10 @@ class Piece():
         """
         Return the player that won if there is one.
         """
-        if np.array_equal(self.get_state(), PieceStates.O_WIN):
+        state = np.abs(self.get_state())
+        if np.array_equal(state, PieceStates.O_WIN):
             return PlayerPiece.O
-        if np.array_equal(self.get_state(), PieceStates.X_WIN):
+        if np.array_equal(state, PieceStates.X_WIN):
             return PlayerPiece.X
         return None
 
@@ -81,6 +82,7 @@ class Piece():
         Apply the Z gate to the state of this piece.
         """
         self.state = GateMatrix.Z @ self.state
+        print(self.state)
 
     def any_gate(self, gate) -> None:
         """

@@ -56,6 +56,7 @@ async function fetchSrcFolder() {
 
 // Function to display win screen
 function showWinScreen(winner) {
+    if (winner === undefined) return;
     const winScreen = document.getElementById('win-screen');
     const winMessage = document.querySelector('.win-message');
     winMessage.textContent = `Player ${winner[winner.length - 1]} wins!`;
