@@ -1,14 +1,18 @@
-"""Piece"""
+"""
+Piece class for the pieces currently placed on the board. Also contains and enum for the 
+game-relevant states that a piece can be in.
+"""
 
 from typing import Union
+from enum import Enum
 import numpy as np
 from gate import GateMatrix
 from player import PlayerPiece
 
 
-class PieceStates():
+class PieceStates(Enum):
     """
-    Different states and what they mean.
+    Different constant quantum states translated to their meaning.
     """
     O_WIN: np.ndarray[np.float32] = [1.0, 0]
     X_WIN: np.ndarray[np.float32] = [0, 1.0]
@@ -20,7 +24,10 @@ class PieceStates():
 
 class Piece():
     """
-    Either an X or an O in superposition.
+    A piece on the gameboard that is either an X or an O in superposition.
+
+    fields:
+        Quantum state of the piece in vector notation. 0 is equivalent to O and X is to 1.
     """
 
     state: np.ndarray[np.float32] = np.array([-1.0, -1.0])
@@ -50,7 +57,7 @@ class Piece():
 
     def get_owner(self) -> Union[PlayerPiece, None]:
         """
-        Return enum of the player that won.
+        Return the player that won if there is one.
         """
         if np.array_equal(self.get_state(), PieceStates.O_WIN):
             return PlayerPiece.O
@@ -59,15 +66,27 @@ class Piece():
         return None
 
     def h_gate(self) -> None:
+        """
+        Apply the H gate to the state of this piece.
+        """
         self.state = GateMatrix.H @ self.state
 
     def not_gate(self) -> None:
+        """
+        Apply the NOT/X gate to the state of this piece.
+        """
         self.state = GateMatrix.NOT @ self.state
 
     def z_gate(self) -> None:
+        """
+        Apply the Z gate to the state of this piece.
+        """
         self.state = GateMatrix.Z @ self.state
 
     def any_gate(self, gate) -> None:
+        """
+        Apply an arbitrary single-qubit gate to this piece.
+        """
         self.state = gate @ self.state
 
     def __str__(self) -> str:

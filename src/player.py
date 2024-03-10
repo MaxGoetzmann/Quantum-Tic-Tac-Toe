@@ -1,8 +1,8 @@
-"""Player"""
+"""
+Player class and pieces the player could be
+"""
 
 from enum import Enum
-from typing import Union
-import numpy as np
 
 
 class PlayerPiece(Enum):
@@ -15,22 +15,48 @@ class PlayerPiece(Enum):
 
 class Player():
     """
-    Player piece
+    Player controlling one of the letters the game.
 
     fields:
+        piece_selection (PlayerPiece): Xs or Os.
+        went_first (bool): Did this player make the first move?
 
-    functions:
+    methods:
+        get_selection() -> PlayerPiece
     """
 
     piece_selection: PlayerPiece
     went_first: bool
 
-    def __init__(self, piece_selection: Union[None, PlayerPiece], first: bool) -> None:
+    def __init__(self, piece_selection: PlayerPiece, first: bool) -> None:
+        """
+        parameters:
+            piece_selection (PlayerPiece): Pick Xs or Os.
+            first (bool): Does this player go first?
+
+        returns: 
+            None
+        """
         self.piece_selection = piece_selection
         self.went_first = first
 
     def get_selection(self) -> PlayerPiece:
+        """
+        Return whether this player is an X or O.
+
+        parameters:
+            None
+
+        returns: 
+            PlayerPiece
+        """
         return self.piece_selection
+
+    def get_went_first(self) -> bool:
+        """
+        Wrapper for returning if player went first.
+        """
+        return self.went_first
 
     def __str__(self) -> str:
         if self.piece_selection == PlayerPiece.O:

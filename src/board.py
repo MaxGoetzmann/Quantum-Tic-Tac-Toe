@@ -1,9 +1,7 @@
 """Board"""
 
-import json
-import numpy as np
 from typing import Union
-from piece import Piece, PieceStates
+from piece import Piece
 from player_move import OneQubitMove
 from player import PlayerPiece
 from gate import Gate
@@ -34,12 +32,15 @@ class Board():
     def get_square(self, target: OneQubitMove) -> Union[Piece, Gate, None]:
         return self.board[target[0]][target[1]]
 
+    def get_board(self) -> list[list[Union[None, Piece, Gate]]]:
+        return self.board
+
     def get_owner(self, target: OneQubitMove) -> Union[PlayerPiece, None]:
         if not self.is_piece(target):
             return None
         return self.get_square(target).get_owner()
 
-    def nice_dump(self) -> list[list[Union[str]]]:
+    def str_arr(self) -> list[list[Union[str]]]:
         out = []
         for i in self.board:
             new_row = []

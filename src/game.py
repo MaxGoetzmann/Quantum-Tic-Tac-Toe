@@ -1,4 +1,6 @@
-"""Game"""
+"""
+Game
+"""
 
 from typing import Union
 from board import Board
@@ -15,6 +17,7 @@ class Game():
     turn: int
     current_player: Player
     game_ended: bool
+    moves: list[PlayerMove]
 
     def __init__(self, first: Union[PlayerPiece, None] = None) -> None:
         # Decide first player, with X being the default.
@@ -29,6 +32,7 @@ class Game():
         self.board = Board()
         self.turn = 1
         self.game_ended = False
+        self.moves = []
 
     def is_valid_move(self, move: PlayerMove) -> bool:
         """
@@ -78,6 +82,9 @@ class Game():
     def get_current_turn(self) -> int:
         return self.turn
 
+    def get_board(self) -> list[list[Union[None, Piece, Gate]]]:
+        return self.board.get_board()
+
     def apply_move(self, move: PlayerMove) -> None:
         assert self.is_valid_move(move)
 
@@ -114,6 +121,8 @@ class Game():
                            move.get_type() == MoveType.PLACE_SUPERPOS)
             self.board.place(sq, move.get_target())
 
+        self.moves.append(move)
+
         # Check win
         winner = self.check_win()
         if winner:
@@ -122,7 +131,8 @@ class Game():
 
         # Pass turn
         self.turn += 1
-        self.current_player = self.players[1] if self.current_player == self.players[0] else self.players[0]
+        self.current_player = self.players[1] if self.current_player == self.players[0] \
+            else self.players[0]
 
     def end_game(self, winner: Player) -> None:
         print(f"Player {winner} wins!!!")
@@ -132,7 +142,7 @@ class Game():
         return self.game_ended
 
     def nice_dump(self) -> list[list[Union[str]]]:
-        return self.board.nice_dump()
+        return self.board.str_arr()
 
     def __str__(self) -> str:
         return str(self.board)

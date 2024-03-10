@@ -1,7 +1,18 @@
+"""
+Gate class and the GateTypes currently implemented in the game.
+
+___
+
+TODO: this class should be extended. 
+
+Each gate should have an "apply_matrix()" method that applies the matrix to an inputted state.
+This would allow for combatability with CNOT and other 2-qubit gates without implementing a bunch 
+    of stringent type checking logic whenever this method is called.
+"""
+
+
 from enum import Enum
 import numpy as np
-
-
 inv_root_2 = 1/np.sqrt(2)
 
 
