@@ -8,15 +8,6 @@ from game import Game
 from player_move import PlayerMove, MoveType
 
 CYCLE = 1
-# board_out = [
-#             [None, None, None],
-#             [None, None, None],
-#             [None, None, None],
-# ]
-# game_out = {}
-# player_won = ""
-# player_turn = ""
-# move_success = False
 
 
 def get_player_moves(game: Game):
@@ -46,8 +37,8 @@ def get_player_moves(game: Game):
 
             game.apply_move(real_move)
 
-        except:
-            print("Input is wrong.")
+        except (TypeError, AssertionError) as err:
+            print(f"Input is wrong. Raises error: {err}")
 
         time.sleep(CYCLE)
 
@@ -118,6 +109,7 @@ def handle_pyodide():
         else:
             move_success = False
     player_turn = str(game.get_current_player().get_selection())
+    print(player_turn)
     board_out = game.nice_dump()
     game_out = jsonpickle.encode(game)
 
