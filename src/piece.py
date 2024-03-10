@@ -4,13 +4,12 @@ game-relevant states that a piece can be in.
 """
 
 from typing import Union
-from enum import Enum
 import numpy as np
 from gate import GateMatrix
 from player import PlayerPiece
 
 
-class PieceStates(Enum):
+class PieceStates():
     """
     Different constant quantum states translated to their meaning.
     """
@@ -91,7 +90,6 @@ class Piece():
 
     def __str__(self) -> str:
         state = np.abs(self.get_state())
-        print(state)
         if np.array_equal(state, PieceStates.O_WIN):
             return "O"
         elif np.array_equal(state, PieceStates.X_WIN):

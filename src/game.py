@@ -17,7 +17,7 @@ class Game():
     turn: int
     current_player: Player
     game_ended: bool
-    moves: list[PlayerMove]
+    last_move: PlayerMove
 
     def __init__(self, first: Union[PlayerPiece, None] = None) -> None:
         # Decide first player, with X being the default.
@@ -32,7 +32,7 @@ class Game():
         self.board = Board()
         self.turn = 1
         self.game_ended = False
-        self.moves = []
+        self.last_move = None
 
     def is_valid_move(self, move: PlayerMove) -> bool:
         """
@@ -88,7 +88,7 @@ class Game():
     def apply_move(self, move: PlayerMove) -> None:
         assert self.is_valid_move(move)
 
-        print(move)
+        print(self.get_current_player(), "does", str(move))
 
         # Do move for gate on piece
         if self.board.is_piece(move.get_target()):
@@ -121,7 +121,7 @@ class Game():
                            move.get_type() == MoveType.PLACE_SUPERPOS)
             self.board.place(sq, move.get_target())
 
-        self.moves.append(move)
+        self.last_move = move
 
         # Check win
         winner = self.check_win()

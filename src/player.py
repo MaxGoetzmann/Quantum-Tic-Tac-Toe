@@ -62,3 +62,8 @@ class Player():
         if self.piece_selection == PlayerPiece.O:
             return "O"
         return "X"
+
+    def __eq__(self, __value: object) -> bool:
+        if not isinstance(__value, Player):
+            return False
+        return self.get_selection() == __value.get_selection()

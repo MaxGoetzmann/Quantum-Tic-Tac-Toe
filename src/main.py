@@ -24,11 +24,11 @@ def get_player_moves(game: Game):
     Prompt console loop for requesting player move types and positions.
     """
     while True:
+        print(game)
         if game.is_game_over():
             break
 
         try:
-            print(game)
             move = input(
                 f"Player {game.get_current_player()}, enter your move's type: ")
             row = int(
@@ -40,8 +40,7 @@ def get_player_moves(game: Game):
 
             real_move = PlayerMove(
                 PlayerMove.match_abbr_to_move(move),
-                (row, col), game.get_current_player(),
-                game.get_current_player())
+                (row, col), game.get_current_player())
 
             assert game.is_valid_move(real_move)
 
@@ -58,12 +57,11 @@ def make_move(game: Game, move: MoveType, row: int, col: int):
     Debugging application of the fields of a move. 
     """
     test_move = PlayerMove(move, (row, col),
-                           game.get_current_player(), game.get_current_turn())
+                           game.get_current_player())
     game.apply_move(test_move)
-    print(game)
 
 
-def test(game):
+def test(game: Game):
     """
     Debugging test scenarios for game.
     """
@@ -71,6 +69,7 @@ def test(game):
     make_move(game, MoveType.NOTGATE, 0, 2)
     make_move(game, MoveType.ZGATE, 2, 2)
     make_move(game, MoveType.PLACE_SUPERPOS, 1, 0)
+    print(game.get_current_player())
 
 
 def handle_pyodide():
@@ -110,8 +109,7 @@ def handle_pyodide():
             clean_type,
             (pyodide_move["row"],
              pyodide_move["col"]),
-            game.get_current_player(),
-            game.get_current_turn())
+            game.get_current_player())
         if game.is_valid_move(clean_move):
             move_success = True
             game.apply_move(clean_move)
@@ -137,11 +135,6 @@ def play_game():
     # Test locally via console.
     game = Game()
     test(game)
-    dump = jsonpickle.encode(game)
-    print(dump)
-    new_g = jsonpickle.decode(dump)
-    print(new_g)
-    print(game.board.str_arr())
     get_player_moves(game)
 
 

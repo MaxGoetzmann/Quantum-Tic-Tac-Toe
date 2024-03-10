@@ -14,8 +14,8 @@ class MoveType(Enum):
     HGATE = 2
     ZGATE = 3
     NOTGATE = 4
-    CNOTPLACE = 5
-    INVCNOTPLACE = 6
+    # CNOTPLACE = 5
+    # INVCNOTPLACE = 6
 
 
 OneQubitMove = tuple[int]
@@ -30,7 +30,6 @@ class PlayerMove():
         type (MoveType): The type of move the player made.
         target (OneQubitMove, TwoQubitMove): Squares the player targeted in the move.
         origin (Player): Player that made the move.
-        turn (int): Turn the move was made on.
 
     class methods:
         get_type() -> MoveType
@@ -44,14 +43,12 @@ class PlayerMove():
     type: MoveType
     target: Union[OneQubitMove, TwoQubitMove]
     origin: Player
-    turn: int
 
-    def __init__(self, move: MoveType, target: Union[OneQubitMove, TwoQubitMove], origin: Player,
-                 turn: int) -> None:
+    def __init__(self, move: MoveType, target: Union[OneQubitMove, TwoQubitMove],
+                 origin: Player) -> None:
         self.type = move
         self.target = target
         self.origin = origin
-        self.turn = turn
 
     def get_type(self) -> MoveType:
         """
@@ -76,7 +73,8 @@ class PlayerMove():
         Is the move's type the placement of a gate?
         """
         return self.type in (MoveType.HGATE, MoveType.ZGATE, MoveType.NOTGATE,
-                             MoveType.CNOTPLACE, MoveType.INVCNOTPLACE)
+                             # MoveType.CNOTPLACE, MoveType.INVCNOTPLACE
+                             )
 
     @staticmethod
     def match_abbr_to_move(abbr: str) -> MoveType:
@@ -94,8 +92,8 @@ class PlayerMove():
                 return MoveType.ZGATE
             case "NOTGATE":
                 return MoveType.NOTGATE
-            case "CNOTPLACE":
-                return MoveType.CNOTPLACE
+            # case "CNOTPLACE":
+            #     return MoveType.CNOTPLACE
 
         raise TypeError("Unsupported move type")
 
