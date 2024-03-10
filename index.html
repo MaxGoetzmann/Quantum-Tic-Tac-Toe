@@ -12,9 +12,7 @@
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
   </head>
   <body>
-    <div class="top-banner" id="player-to-move">
-      &lt;Player&gt; turn to move
-    </div>
+    <div class="top-banner" id="player-to-move"></div>
     <div class="container">
       <div id="drag-items">
         <div
@@ -28,11 +26,11 @@
         </div>
         <div
           class="drag-item"
-          id="drag-o"
+          id="drag-superpos"
           draggable="true"
           data-type="PLACE_SUPERPOS"
         >
-          X/O
+          -
         </div>
         <div class="drag-item" id="drag-a" draggable="true" data-type="HGATE">
           H

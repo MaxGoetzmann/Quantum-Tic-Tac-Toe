@@ -157,9 +157,12 @@ function playerTurnUpdate(playerTurn) {
 
     // Find the tooltip within the drag item
     const piece = document.getElementById("drag-player")
+
     const tooltip = piece.querySelector('.tooltip-content');
     const tooltipText = tooltip ? tooltip.innerText : '';
+
     piece.innerText = player
+
     // Re-add the tooltip if it existed
     if (tooltipText) {
         const newTooltip = document.createElement('span');
@@ -167,6 +170,12 @@ function playerTurnUpdate(playerTurn) {
         newTooltip.innerText = tooltipText;
         piece.appendChild(newTooltip);
     }
+
+    // Do same for superposition
+    const superpos = document.getElementById("drag-superpos")
+    txt = "-"
+    if (player == "O") txt = "+"
+    superpos.innerText = txt
 }
 
 function plotBoard(board) {
