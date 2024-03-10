@@ -96,10 +96,11 @@ body {
     aspect-ratio: 1; /* Keeps cells square */
     color: var(--quantum-light);
     transition: background-color 0.2s; /* Smooth background transition */
+    user-select: none;
 }
 
 .cell:hover {
-    background-color: var(--quantum-metallic-silver); /* Hover effect */
+    background-color: var(--quantum-panel-bg); /* Hover effect */
 }
 
 @media (max-width: 768px) {

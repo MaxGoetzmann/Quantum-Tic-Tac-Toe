@@ -94,8 +94,14 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-function afterUpdate(board, player_turn) {
+function afterUpdate(board, playerTurn) {
     plotBoard(board);
+    playerTurnUpdate(playerTurn)
+}
+
+function playerTurnUpdate(playerTurn) {
+    const header = document.getElementById("player-to-move")
+    header.innerText = `${playerTurn[playerTurn.length - 1]} to move!`
 }
 
 function plotBoard(board) {
@@ -129,6 +135,7 @@ async function loadPyodideAndRun() {
         boardState = Array.from(namespace.get("board_out"), innerArray => Array.from(innerArray));
         playerTurn = namespace.get("player_turn");
 
+        console.log(playerTurn)
         afterUpdate(boardState, playerTurn)
         console.log(boardState);
 

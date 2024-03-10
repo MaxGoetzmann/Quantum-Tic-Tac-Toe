@@ -16,9 +16,9 @@ class PieceStates():
     O_WIN: np.ndarray[np.float32] = np.array([1.0, 0])
     X_WIN: np.ndarray[np.float32] = np.array([0, 1.0])
     O_POS: np.ndarray[np.float32] = np.round(
-        [GateMatrix.INV_ROOT_2, GateMatrix.INV_ROOT_2], 1)
+        np.array([GateMatrix.INV_ROOT_2, GateMatrix.INV_ROOT_2]), 1)
     X_NEG: np.ndarray[np.float32] = np.round(
-        [GateMatrix.INV_ROOT_2, -GateMatrix.INV_ROOT_2], 1)
+        np.array([GateMatrix.INV_ROOT_2, -GateMatrix.INV_ROOT_2]), 1)
 
 
 class Piece():
@@ -91,9 +91,11 @@ class Piece():
 
     def __str__(self) -> str:
         state = self.get_state()
-        if np.array_equal(state, PieceStates.O_WIN) or np.array_equal(state, -1 * PieceStates.O_WIN):
+        if np.array_equal(state, PieceStates.O_WIN) or \
+                np.array_equal(state, -1 * PieceStates.O_WIN):
             return "O"
-        elif np.array_equal(state, PieceStates.X_WIN) or np.array_equal(state, -1 * PieceStates.X_WIN):
+        elif np.array_equal(state, PieceStates.X_WIN) or \
+                np.array_equal(state, -1 * PieceStates.X_WIN):
             return "X"
         elif np.array_equal(state, PieceStates.O_POS):
             return "+"

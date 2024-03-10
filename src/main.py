@@ -117,7 +117,7 @@ def handle_pyodide():
                 player_won = game.check_win().get_selection()
         else:
             move_success = False
-    player_turn = game.get_current_player().get_selection()
+    player_turn = str(game.get_current_player().get_selection())
     board_out = game.nice_dump()
     game_out = jsonpickle.encode(game)
 
