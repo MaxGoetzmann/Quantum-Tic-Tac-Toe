@@ -1,11 +1,20 @@
-newMove = null
+// JS globals
 mainFile = null
+newMove = null
 pyodide = null
 handleEvent = true;
 
 // What python provides
 boardState = null
 gameState = null
+
+// Function to get a CSS variable's value
+function getCssVariableValue(variableName) {
+    // Get the styles from the root element
+    const style = getComputedStyle(document.documentElement);
+    // Return the value of the variable
+    return style.getPropertyValue(variableName).trim();
+}
 
 
 async function fetchRawTextData(url) {
@@ -94,14 +103,59 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
+function colorSpecificLetters(element) {
+    // Loop through each child node of the current element
+    var childNodes = Array.from(element.childNodes);
+    childNodes.forEach(function (node) {
+        // Check if the current node is a text node
+        if (node.nodeType === Node.TEXT_NODE) {
+            var text = node.textContent;
+            var fragment = document.createDocumentFragment();
+
+            // Split the text content into an array of characters
+            text.split('').forEach(function (char) {
+                var span = document.createElement('span');
+                span.textContent = char;
+
+                // Apply styles to make sure the span affects nothing but the color
+                span.style.display = 'inline';
+                span.style.font = 'inherit';
+                span.style.fontWeight = 'inherit';
+                span.style.lineHeight = 'inherit';
+
+                // Check if the current character matches the target letter
+                if (char === "X") {
+                    span.style.color = getCssVariableValue("--quantum-x-piece");;
+                }
+
+                fragment.appendChild(span);
+            });
+
+            // Replace the text node with the fragment containing spans
+            element.replaceChild(fragment, node);
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+            // If the current node is an element node, recursively call the function
+            colorSpecificLetters(node);
+        }
+    });
+}
+
 function afterUpdate(board, playerTurn) {
     plotBoard(board);
     playerTurnUpdate(playerTurn)
+    //colorSpecificLetters(document.body)
 }
 
 function playerTurnUpdate(playerTurn) {
+    player = playerTurn[playerTurn.length - 1]
+
+    /* Update header. */
     const header = document.getElementById("player-to-move")
-    header.innerText = `${playerTurn[playerTurn.length - 1]} to move!`
+    header.innerText = `${player}  to  move`
+
+    /* Update player piece. */
+    const piece = document.getElementById("drag-player")
+    piece.innerText = player
 }
 
 function plotBoard(board) {

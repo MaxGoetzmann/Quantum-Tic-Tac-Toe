@@ -40,7 +40,6 @@ body {
 
 .top-banner {
   width: 100%;
-  background-color: var(--quantum-bg); /* Green background */
   color: var(--quantum-light); /* White text color */
   text-align: center; /* Center the text */
   padding: 3vh 0; /* Some padding at the top and bottom */
@@ -48,7 +47,9 @@ body {
   top: 0;
   left: 0;
   z-index: 1000; /* Ensure it stays on top of other content */
-  font-size: xx-large;
+  font-size: 300%;
+  letter-spacing: 1px;
+  user-select: none;
 }
 
 #drag-items {
@@ -71,7 +72,6 @@ body {
 
 .drag-item {
     cursor: grab;
-    /* padding: 5vh; */
     border-radius: 35%; /* Makes the items circular */
     border: 1px solid var(--quantum-metallic-silver);
     background-color: var(--quantum-panel-bg);
@@ -79,6 +79,31 @@ body {
     font-weight: bold;
     font-size: x-large;
     user-select: none; /* Prevents the text from being selected during drag */
+    position: relative;
+}
+
+/* Styles for the tooltip content */
+.tooltip-content {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px; /* Use half of the width value to center the tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Show the tooltip content on hover */
+.drag-item:hover .tooltip-content {
+  visibility: visible;
+  opacity: 1;
 }
 
 #tic-tac-toe-board {
