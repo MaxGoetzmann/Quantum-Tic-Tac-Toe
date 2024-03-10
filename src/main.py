@@ -105,7 +105,7 @@ def handle_pyodide():
             move_success = True
             game.apply_move(clean_move)
             if game.is_game_over():
-                player_won = game.check_win().get_selection()
+                player_won = str(game.check_win().get_selection())
         else:
             move_success = False
     player_turn = str(game.get_current_player().get_selection())

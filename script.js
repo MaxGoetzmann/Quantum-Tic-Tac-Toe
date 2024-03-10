@@ -154,8 +154,19 @@ function playerTurnUpdate(playerTurn) {
     header.innerText = `${player}  to  move`
 
     /* Update player piece. */
+
+    // Find the tooltip within the drag item
     const piece = document.getElementById("drag-player")
+    const tooltip = piece.querySelector('.tooltip-content');
+    const tooltipText = tooltip ? tooltip.innerText : '';
     piece.innerText = player
+    // Re-add the tooltip if it existed
+    if (tooltipText) {
+        const newTooltip = document.createElement('span');
+        newTooltip.classList.add('tooltip-content');
+        newTooltip.innerText = tooltipText;
+        piece.appendChild(newTooltip);
+    }
 }
 
 function plotBoard(board) {
