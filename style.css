@@ -86,27 +86,33 @@ body {
 /* Styles for the tooltip content */
 .tooltip-content {
   visibility: hidden;
-  width: 120px;
+  width: 150px; /* Control the width of the tooltip */
   background-color: var(--quantum-dark);
   color: var(--quantum-light);
   text-align: center;
   border-radius: 6px;
-  padding: 5px 0;
+  padding: 5px 10px; /* Added horizontal padding for text wrapping */
   position: absolute;
   z-index: 1;
-  bottom: 100%;
-  left: 50%;
-  margin-left: -60px; /* Use half of the width value to center the tooltip */
+  top: 50%; /* Position at the middle of the parent vertically */
+  transform: translateY(-50%); /* Center vertically relative to the parent */
+  left: auto; /* Reset left positioning */
+  right: 100%; /* Align to the left of the parent */
+  margin-right: 10px; /* Adjust spacing between the tooltip and the parent */
   opacity: 0;
   font-weight: normal;
   font-size: 100%;
   transition: opacity 0.3s;
+  white-space: normal; /* Ensure text wraps */
+  overflow-wrap: break-word; /* Allows long words to be broken and wrap to the next line */
 }
 
-/* Show the tooltip content on hover */
-.drag-item:hover .tooltip-content {
+/* Show the tooltip content on hover, but only if not dragging */
+.drag-item:not(.dragging):hover .tooltip-content {
   visibility: visible;
   opacity: 1;
+  transition: opacity 0.3s;
+  transition-delay: 1s; /* Delay the transition by 1 second */
 }
 
 #tic-tac-toe-board {

@@ -146,6 +146,13 @@ function afterUpdate(board, playerTurn) {
     //colorSpecificLetters(document.body)
 }
 
+function repopTooltip(element, text) {
+    const newTooltip = document.createElement('span');
+    newTooltip.classList.add('tooltip-content');
+    newTooltip.innerText = text;
+    element.appendChild(newTooltip);
+}
+
 function playerTurnUpdate(playerTurn) {
     player = playerTurn[playerTurn.length - 1]
 
@@ -157,25 +164,19 @@ function playerTurnUpdate(playerTurn) {
 
     // Find the tooltip within the drag item
     const piece = document.getElementById("drag-player")
-
-    const tooltip = piece.querySelector('.tooltip-content');
-    const tooltipText = tooltip ? tooltip.innerText : '';
-
     piece.innerText = player
 
-    // Re-add the tooltip if it existed
-    if (tooltipText) {
-        const newTooltip = document.createElement('span');
-        newTooltip.classList.add('tooltip-content');
-        newTooltip.innerText = tooltipText;
-        piece.appendChild(newTooltip);
-    }
+    repopTooltip(piece,
+        `Place a ${player}`)
 
     // Do same for superposition
     const superpos = document.getElementById("drag-superpos")
     txt = "-"
     if (player == "O") txt = "+"
     superpos.innerText = txt
+
+    repopTooltip(superpos,
+        `Place a ${player} in superposition`)
 }
 
 function plotBoard(board) {
@@ -183,8 +184,10 @@ function plotBoard(board) {
         for (let col = 0; col < 3; col++) {
             const id = row * 3 + col + 1
             const cell = document.getElementById(`cell-${id}`);
-            if (board[row][col] !== "None") {
-                cell.textContent = board[row][col];
+            let val = board[row][col];
+            if (val !== "None") {
+                if (val == "~") val = "NOT";
+                cell.textContent = val;
             }
         }
     }
@@ -219,7 +222,6 @@ async function loadPyodideAndRun() {
     // ....
 }
 
-// script.js
 document.addEventListener('DOMContentLoaded', () => {
     const dragItems = document.querySelectorAll('#drag-items > div');
     const cells = document.querySelectorAll('.cell');
@@ -236,6 +238,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleDragStart(e) {
         if (!handleEvent) return;
         e.dataTransfer.setData('text', e.target.id);
+        const id = e.dataTransfer.getData('text');
+        const draggableElement = document.getElementById(id);
+        draggableElement.classList.add('dragging');
     }
 
     function handleDragOver(e) {
@@ -247,6 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!handleEvent) return;
         const id = e.dataTransfer.getData('text');
         const draggableElement = document.getElementById(id);
+        draggableElement.classList.remove('dragging');
         newMove = {
             type: draggableElement.getAttribute("data-type"),
             row: parseInt(e.target.getAttribute("data-row")),
