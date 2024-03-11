@@ -216,10 +216,7 @@ async function loadPyodideAndRun() {
         console.log(boardState);
 
         requestAnimationFrame(gameLoop);
-
     })
-    console.log("post py")
-    // ....
 }
 
 document.addEventListener('DOMContentLoaded', () => {
