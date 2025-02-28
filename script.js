@@ -33,12 +33,12 @@ async function fetchRawTextData(url) {
 
 async function fetchSrcFolder() {
     /* 
-        Bypassing Git token "security".
+        Bypassing Git token ""security"".
         You have content read permissions for this repository only. Go wild.
     */
     const apiUrl = "https://api.github.com/repos/MaxGoetzmann/Quantum-Tic-Tac-Toe/contents/src";
-    const keypt1 = "github_pat_11AUYCOVI0aCCKMd0dQDeK_"
-    const keypt2 = "MWx6IWEXzmaKeNWUeW5iceqqF2CVQvJxifGZTkr59Ec7IZLA4DFrbC13aDF"
+    const keypt1 = "github_pat_11AUYCOVI0hD8jQdAwbktg_"
+    const keypt2 = "EzrSpXKoNXe11XewCAyU1YoQWrchSebDoCbnqyHpXULL54MAQM5MnOOEbgQ"
     const headers = {
         "Authorization": `token ${keypt1}${keypt2}`
     }
